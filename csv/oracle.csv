@@ -1,0 +1,89 @@
+title,content,url,cnt,date,source
+Oracle Cloud와 타 클라우드 연결하기,temp,http://www.oracloud.kr/post/interconnectivity/,0,2018-10-02,oracloud
+Developer Cloud의 Build Pipeline 사용하기,temp,http://www.oracloud.kr/post/devcs002/,0,2018-10-01,oracloud
+OCI 따라하기 2-2. Private Subnet에 Instance 생성하기,temp,http://www.oracloud.kr/post/oci_workshop_6/,0,2018-09-25,oracloud
+OCI 따라하기 2-1. Instance 생성하기,temp,http://www.oracloud.kr/post/oci_workshop_5/,0,2018-09-24,oracloud
+OCI 따라하기 1-4. Private Subnet 설정하기,temp,http://www.oracloud.kr/post/oci_workshop_4/,0,2018-09-23,oracloud
+OCI 따라하기 1-3. Security List 설정하기,temp,http://www.oracloud.kr/post/oci_workshop_3/,0,2018-09-22,oracloud
+Application Container로 10분 안에 Node.js 배포하기,temp,http://www.oracloud.kr/post/accs002/,0,2018-09-21,oracloud
+OCI 따라하기 1-2. DRG 생성하기,temp,http://www.oracloud.kr/post/oci_workshop_2/,0,2018-09-21,oracloud
+OCI 따라하기 1-1. VCN 생성하기,temp,http://www.oracloud.kr/post/oci_workshop_1/,0,2018-09-20,oracloud
+Developer Cloud를 사용한 Docker Image 빌드 및 OCIR(Oracle Cloud Infrastructure Registry)에 Docker Image Push하기,temp,http://www.oracloud.kr/post/devcs001/,0,2018-09-19,oracloud
+OCI 따라하기 시리즈,temp,http://www.oracloud.kr/post/oci_workshop/,0,2018-09-19,oracloud
+VGA Console로 OCI Compute 인스턴스 연결하기,temp,http://www.oracloud.kr/post/oci_vga_console/,0,2018-09-18,oracloud
+Cloudberry로 OCI Object Storage 접속하기,temp,http://www.oracloud.kr/post/oci_objectstorage_cloudberry_s3/,0,2018-09-14,oracloud
+Oracle Autonomous Blockchain Cloud Service 소개,temp,http://www.oracloud.kr/post/intro_blockchain/,0,2018-09-13,oracloud
+Application Container로 10분 안에 웹서비스 구축하기,temp,http://www.oracloud.kr/post/accs001/,0,2018-09-11,oracloud
+'Oracle Cloud AI 서비스' @ Oracle Impact,temp,http://www.oracloud.kr/post/oracle_impact/,0,2018-09-08,oracloud
+Oracle Container Engine (OKE) #01 : Docker &amp; Kubernetes,temp,http://www.oracloud.kr/post/docker_and_oke/,0,2018-09-02,oracloud
+오라클 챗봇 (Oracle Intelligent Bots) 기능 둘러보기,temp,http://www.oracloud.kr/post/chatbot_intro/,0,2018-09-01,oracloud
+챗봇이란 무엇인가. 챗봇 용어 및 개념 완벽 정리,temp,http://www.oracloud.kr/post/chatbot_terms/,0,2018-09-01,oracloud
+Oracle Developer Cloud - 신기능 자세히 알아보기,temp,http://www.oracloud.kr/post/devcs000/,0,2018-08-03,oracloud
+Oracle Big Data Cloud와 Object Storage 연동,temp,http://www.oracloud.kr/post/bdc_object_storage_integration/,0,2018-06-18,oracloud
+Oracle BDC의 Ambari 보안 설정 변경,temp,http://www.oracloud.kr/post/bdc_ambari/,0,2018-05-31,oracloud
+Oracle Cloud의 PaaS 서비스 패치: Event Hub Service,temp,http://www.oracloud.kr/post/oehcs_patch/,0,2018-05-22,oracloud
+OCI 배포 가능한 Oracle Platform Services(2018.05.15 기준),temp,http://www.oracloud.kr/post/oracle_paas_on_oci/,0,2018-05-16,oracloud
+Oracle Cloud IaaS: OCI vs OCI Classic,temp,http://www.oracloud.kr/post/oci_and_oci_classic/,0,2018-05-03,oracloud
+Oracle Cloud 트라이얼 신청 절차 (2018.05.01 기준),temp,http://www.oracloud.kr/post/oracle_cloud_trial/,0,2018-05-01,oracloud
+"OCI Classic: Compute 서비스, VM의 고정 Public IP 지정",temp,http://www.oracloud.kr/post/oci_classic_computing_with_permanent_public_ip/,0,2018-04-30,oracloud
+"OCI Classic: Compute 서비스, VM 생성",temp,http://www.oracloud.kr/post/oci_classic_computing/,0,2018-04-27,oracloud
+Oracle Autonomous Data Warehouse와 Big Data의 오브젝트 스토리지 연계,temp,http://www.oracloud.kr/post/integrating_adw_bdc_os/,0,2018-03-31,oracloud
+[번역]관리형 아파치 카산드라 서비스 소개: Oracle Data Hub Cloud Service,temp,http://www.oracloud.kr/post/trans_data_hub/,0,2017-12-26,oracloud
+[번역]2017 KubeCon 오라클 발표: Kubernetes와 Serverless,temp,http://www.oracloud.kr/post/trans_kubernetes_serverless/,0,2017-12-25,oracloud
+2017년 12월 제2회 오라클 클라우드 Developer Meetup 현장 스케치,temp,http://www.oracloud.kr/post/oracle_cloud_developer_meetup_201712/,0,2017-12-16,oracloud
+Oracle Digital이 운영하는 네이버 포스트..,temp,http://www.oracloud.kr/post/oracle_digitals_blog/,0,2017-11-03,oracloud
+Oracle Cloud Trial 신청: Universal Credit,temp,http://www.oracloud.kr/post/oracle_cloud_trial_universal/,0,2017-10-29,oracloud
+Oracle Big Data Cloud Service Compute-Edition,temp,http://www.oracloud.kr/post/bdcsce01/,0,2017-10-27,oracloud
+[번역]Fn–An Open Source Serverless Functions Platform,temp,http://www.oracloud.kr/post/oracle_blog_fn/,0,2017-10-04,oracloud
+Terraform Jupyter Installer: Machine Learning 환경 프로비저닝 ,temp,http://www.oracloud.kr/post/terraform_jupyter_installer/,0,2017-10-03,oracloud
+오라클 클라우드 데이터 센터와 센터별 IaaS와 PaaS 서비스 목록,temp,http://www.oracloud.kr/post/oracle-cloud_dc_location/,0,2017-09-29,oracloud
+MySQL 인스턴스에 대한 백업과 복구,temp,http://www.oracloud.kr/post/mysqlcs_backup/,0,2017-09-29,oracloud
+[번역]오라클의 CNCF(Cloud Native Computing Foundation) 가입 의미,temp,http://www.oracloud.kr/post/oracle_cncf/,0,2017-09-25,oracloud
+Oracle PaaS의 Storage CS 컨테이너 설정 형식 변경,temp,http://www.oracloud.kr/post/stroage_cs_url/,0,2017-09-24,oracloud
+Oracle Cloud Infrastructure(BMCS)에서 CHEF 활용하기,temp,http://www.oracloud.kr/post/bmcs_chef/,0,2017-09-15,oracloud
+Oracle IaaS 브랜드 명 변경,temp,http://www.oracloud.kr/post/changing_cs_naming/,0,2017-09-14,oracloud
+2017 Oracle Code In Seoul: How to control cloud resources 데모,temp,http://www.oracloud.kr/post/oracle_code_provisioning/,0,2017-08-29,oracloud
+Oracle 클라우드 서비스 명 변경: Oracle Cloud Infrastructure,temp,http://www.oracloud.kr/post/oracle_cs_updateing_naming/,0,2017-08-29,oracloud
+Oracle Code in Seoul,temp,http://www.oracloud.kr/post/oracle_code/,0,2017-08-27,oracloud
+Oracle Cloud Trial 신청: $300 Credit,temp,http://www.oracloud.kr/post/oracle_cloud_reg/,0,2017-08-26,oracloud
+Oracle API Catalog Cloud Service 소개,temp,http://www.oracloud.kr/post/api_catalog_cs_overview/,0,2017-08-23,oracloud
+Oracle Cloud의 PaaS 서비스 패치: Orace BDCSCE,temp,http://www.oracloud.kr/post/oracloud_patch/,0,2017-08-20,oracloud
+한국 오라클 마케팅: 한국 오라클 팩트 체크,temp,http://www.oracloud.kr/post/oracle_fact/,0,2017-08-18,oracloud
+Apache Kafka PaaS: Oracle Event Hub CS 소개..,temp,http://www.oracloud.kr/post/kafka_paas_eventhub_cs/,0,2017-08-14,oracloud
+Identity Domain,temp,http://www.oracloud.kr/post/identity_domain/,0,2017-08-11,oracloud
+Oracle PaaS Service Manager 소개 및 설치,temp,http://www.oracloud.kr/post/installing_pms/,0,2017-08-06,oracloud
+Oracle Cloud 트라이얼 계정 지원 방식 변경,temp,http://www.oracloud.kr/post/changing_trial_account/,0,2017-08-01,oracloud
+Oracle Container Cloud Service의 Infographics입니다.,temp,http://www.oracloud.kr/post/container_infographics/,0,2017-08-01,oracloud
+Oracle BDCSCE: 클러스터 생성 ,temp,http://www.oracloud.kr/post/stpe_by_step_new_cluster_bdcsce/,0,2017-07-31,oracloud
+쉽게 따라해보는 데이터 시각화 제2회 '데이터 연결',temp,http://www.oracloud.kr/post/dvcs002/,0,2017-05-15,oracloud
+데이타베이스 클라우드 서비스 인스턴스에서 백업 구성,temp,http://www.oracloud.kr/post/dbcsbackup/,0,2017-05-10,oracloud
+Oracle MySQL Cloud Service,temp,http://www.oracloud.kr/post/mysql_cs/,0,2017-05-10,oracloud
+MySQL Cloud를 시작하고 샘플 스키마 생성하기,temp,http://www.oracloud.kr/post/mysqlcs/,0,2017-05-04,oracloud
+오라클 클라우드 Compute CS 보안 적용,temp,http://www.oracloud.kr/post/compute_security/,0,2017-05-04,oracloud
+우분투 17.04 가상머신 만들기,temp,http://www.oracloud.kr/post/compute_instance/,0,2017-05-02,oracloud
+Oracle Storage Cloud Service,temp,http://www.oracloud.kr/post/storage_cs/,0,2017-04-28,oracloud
+쉽게 따라해보는 데이터 시각화 제1회 '실습환경 구성.',temp,http://www.oracloud.kr/post/dvcs001/,0,2017-04-26,oracloud
+Big Data Preparation Cloud Service소개,temp,http://www.oracloud.kr/post/bdpcs/,0,2017-04-25,oracloud
+Oracle Container CS에 Docker 이미지 배포,temp,http://www.oracloud.kr/post/occs_new_docker_container/,0,2017-04-24,oracloud
+Oracle BMCS에서 Terraform을 이용한 관리 자동화 구축,temp,http://www.oracloud.kr/post/bmcs_terraform/,0,2017-04-21,oracloud
+Oracle Management Cloud(OMC) 소개,temp,http://www.oracloud.kr/post/omc/,0,2017-04-21,oracloud
+클라우드를 이용한 차세대 인프라 운영관리 방안,temp,http://www.oracloud.kr/post/omc_cloud_mgt/,0,2017-04-21,oracloud
+Oracle Container CS 인스턴스 생성,temp,http://www.oracloud.kr/post/occs-new-inst/,0,2017-04-20,oracloud
+오라클 클라우드의 Docker 컨테이너 지원 유형,temp,http://www.oracloud.kr/post/docker_in_oc/,0,2017-04-19,oracloud
+Upload CLI을 이용한 Object Storage 데이터 이관,temp,http://www.oracloud.kr/post/uploadcli/,0,2017-04-19,oracloud
+Oracle Ravello Cloud Service 데모,temp,http://www.oracloud.kr/post/ravello_demo/,0,2017-04-15,oracloud
+Oracle Container Cloud Service 소개와 Docker 개요,temp,http://www.oracloud.kr/post/occs/,0,2017-04-05,oracloud
+IaaS Provisioning 툴: Terraform,temp,http://www.oracloud.kr/post/terraform/,0,2017-04-01,oracloud
+오라클 클라우드에서 window VM 인스턴스 생성,temp,http://www.oracloud.kr/post/win-vm/,0,2017-03-31,oracloud
+Oracle Database Backup Cloud Service(ODBCS) 소개,temp,http://www.oracloud.kr/post/obcs/,0,2017-03-31,oracloud
+TalkIT: 클라우드에서 오라클 데이터베이스,temp,http://www.oracloud.kr/post/talkit_dbcs/,0,2017-03-29,oracloud
+Ravello를 이용한 모의 해킹 환경 구축,temp,http://www.oracloud.kr/post/ravello_by_kim_suk/,0,2017-03-25,oracloud
+Oracle Ravello Cloud Service 소개,temp,http://www.oracloud.kr/post/ravello_overview/,0,2017-03-15,oracloud
+Oracle Database CS: 인스턴스 생성 및 접속 Demo,temp,http://www.oracloud.kr/post/dbcs_demo/,0,2017-03-12,oracloud
+TalkIT: 가상환경 클라우드 전환 - Ravello,temp,http://www.oracloud.kr/post/talkit_ravello/,0,2017-03-09,oracloud
+Oracle Storage Cloud Service 활성화,temp,http://www.oracloud.kr/post/objest-storage-replication/,0,2017-03-06,oracloud
+오라클 IaaS를 이용한 VM 인스턴스 생성,temp,http://www.oracloud.kr/post/iaas_vm/,0,2017-03-05,oracloud
+ssh config 설정 방법,temp,http://www.oracloud.kr/post/ssh_config/,0,2017-03-05,oracloud
+"윈도우, 리눅스, 맥에서 ssh 보안키 생성",temp,http://www.oracloud.kr/post/ssh_key/,0,2017-03-04,oracloud
+오라클 클라우드 계정,temp,http://www.oracloud.kr/post/accont/,0,2017-03-02,oracloud
+oracloud.kr 오픈,temp,http://www.oracloud.kr/post/oracloud/,0,2017-03-01,oracloud
