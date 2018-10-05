@@ -14,7 +14,7 @@ options.add_argument('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) '
                      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36')
 
 # webdriver path
-driver = webdriver.Chrome('/Users/ghyeon/Documents/chromedriver/chromedriver', chrome_options=options)
+driver = webdriver.Chrome('./webdriver/chromedriver', chrome_options=options)
 
 # Naver IT/Science news
 driver.get("https://news.naver.com/main/main.nhn?mode=LSD&mid=shm&sid1=105")

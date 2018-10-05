@@ -25,7 +25,7 @@ class Subicura:
             soup = BeautifulSoup(req.text, 'html.parser')
             date = soup.find("time")
             date = self.parse_date(date.contents[0])
-            self.write.writerow([title, "temp", main_url + sub_url, "0", date, "subicura"])
+            self.write.writerow([title, "temp", main_url + sub_url, 0, date, "subicura"])
         self.file.close()
         print("Subicura Crawl End")
 

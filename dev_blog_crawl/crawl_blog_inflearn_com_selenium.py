@@ -13,7 +13,7 @@ class Inflearn:
                                   'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36')
 
         # webdriver path(Need to be Changed)
-        self.driver = webdriver.Chrome('../webdriver/chromedriver', chrome_options=self.options)
+        self.driver = webdriver.Chrome('./webdriver/chromedriver', chrome_options=self.options)
 
         # csv
         self.file = open("./csv/inflearn.csv", "w", encoding='utf-8', newline='')
@@ -37,7 +37,7 @@ class Inflearn:
                     url = self.driver.current_url
                     date = self.parse_date(self.driver.find_element_by_css_selector('time').text)
                     # print(date)
-                    self.write.writerow([title, "temp", url, "0", date, "inflearn"])
+                    self.write.writerow([title, "temp", url, 0, date, "inflearn"])
                     # print("title:", self.driver.find_element_by_class_name('entry-header').text)
                     # print("url:", self.driver.current_url)
                     self.driver.back()

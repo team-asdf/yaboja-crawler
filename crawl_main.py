@@ -1,13 +1,10 @@
-from crawl_subicura_com_bs4 import Subicura
-from crawl_blog_inflearn_com_selenium import Inflearn
 import os
 import csv
-
-crawl_list = [Subicura(), Inflearn()]
-csv_list = []
+import subprocess
 
 
 def merge_files():
+    csv_list = []
     for file in os.listdir("./csv"):
         if file.endswith(".csv"):
             if file != "main.csv":
@@ -31,10 +28,15 @@ def merge_files():
     write.close()
 
 
+def crawl():
+    for file in os.listdir("./dev_blog_crawl"):
+        if file.endswith(".py"):
+            subprocess.call(["python3", "./dev_blog_crawl/" + file])
+
+
 def main():
     print("Full Operation Start")
-    for each in crawl_list:
-        each.main()
+    crawl()
     print("Full Operation End")
 
 
