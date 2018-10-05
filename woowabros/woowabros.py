@@ -2,6 +2,9 @@ import requests
 import os
 import csv
 from bs4 import BeautifulSoup
+import sys
+sys.path.insert(0, '../keyword-module')
+from get_keyword import getKeywords
 
 
 def getLinks():
@@ -25,6 +28,9 @@ def getData(file, link):
     title = content_soup.find("h1", {"class": "post-title"}).text.replace(u'\xa0',' ').replace('\t',' ')
     created_at = content_soup.find("time")['datetime'].split("T")[0]
 
+    print(title)
+    keyword_list = getKeywords(title.lower())
+
     content = ""
     section_content = content_soup.find_all("div", {"class": "post-content"})
     for s in section_content:
@@ -33,7 +39,8 @@ def getData(file, link):
             content += c.text
             content += "\n"
     content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ')
-    file.writerow([link, created_at, title, content])
+    source = "woowabros"
+    file.writerow([link, created_at, title, content, source])
 
 
 link_list = list()
@@ -41,7 +48,7 @@ link_list = getLinks()
 
 file = open("data/woowabros.csv", "w", encoding='utf-8', newline='')
 writefile = csv.writer(file)
-writefile.writerow(["link", "created_at", "title", "content"])
+writefile.writerow(["url", "createdAt", "title", "content", "source"])
 for i in range(len(link_list)):
     getData(writefile, link_list[i])
 file.close()
