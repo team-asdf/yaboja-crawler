@@ -5,7 +5,7 @@ import csv
 
 class Oracle:
     def __init__(self):
-        self.file = open("./csv/oracle.csv", "w", encoding='utf-8', newline='')
+        self.file = open("../csv/oracle.csv", "w", encoding='utf-8', newline='')
         self.write = csv.writer(self.file)
         self.write.writerow(["title", "content", "url", "cnt", "date", "source"])
 

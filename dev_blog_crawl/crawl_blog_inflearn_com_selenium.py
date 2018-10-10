@@ -13,10 +13,10 @@ class Inflearn:
                                   'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36')
 
         # webdriver path(Need to be Changed)
-        self.driver = webdriver.Chrome('./webdriver/chromedriver', chrome_options=self.options)
+        self.driver = webdriver.Chrome('../webdriver/chromedriver', chrome_options=self.options)
 
         # csv
-        self.file = open("./csv/inflearn.csv", "w", encoding='utf-8', newline='')
+        self.file = open("../csv/inflearn.csv", "w", encoding='utf-8', newline='')
         self.write = csv.writer(self.file)
         self.write.writerow(["title", "content", "url", "cnt", "date", "source"])
 

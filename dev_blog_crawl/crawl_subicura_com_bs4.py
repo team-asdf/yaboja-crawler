@@ -9,7 +9,7 @@ class Subicura:
         self.req = requests.get('https://subicura.com')
         self.html = self.req.text
         self.soup = BeautifulSoup(self.html, 'html.parser')
-        self.file = open("./csv/subicura.csv", "w", encoding='utf-8', newline='')
+        self.file = open("../csv/subicura.csv", "w", encoding='utf-8', newline='')
         self.write = csv.writer(self.file)
         self.write.writerow(["title", "content", "url", "cnt", "date", "source"])
 
