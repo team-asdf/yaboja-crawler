@@ -26,10 +26,9 @@ def getData(file, link):
     content_soup = BeautifulSoup(content_source, "lxml")
 
     title = content_soup.find("h1", {"class": "post-title"}).text.replace(u'\xa0',' ').replace('\t',' ')
-    created_at = content_soup.find("time")['datetime'].split("T")[0]
-
-    print(title)
     keyword_list = getKeywords(title.lower())
+    _keyword = ",".join(keyword_list)
+    created_at = content_soup.find("time")['datetime'].split("T")[0]
 
     content = ""
     section_content = content_soup.find_all("div", {"class": "post-content"})
@@ -37,10 +36,9 @@ def getData(file, link):
         contents = s.find_all("p")
         for c in contents:
             content += c.text
-            content += "\n"
     content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ')
     source = "woowabros"
-    file.writerow([link, created_at, title, content, source])
+    file.writerow([title, content, link, source, _keyword, "NULL", created_at])
 
 
 link_list = list()
@@ -48,7 +46,7 @@ link_list = getLinks()
 
 file = open("data/woowabros.csv", "w", encoding='utf-8', newline='')
 writefile = csv.writer(file)
-writefile.writerow(["url", "createdAt", "title", "content", "source"])
+writefile.writerow(["title", "content", "url", "source", "keyword", "image", "createdAt"])
 for i in range(len(link_list)):
     getData(writefile, link_list[i])
 file.close()

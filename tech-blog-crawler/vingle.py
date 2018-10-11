@@ -42,9 +42,8 @@ def getData(file, link):
     content_soup = BeautifulSoup(content_source, "lxml")
 
     title = content_soup.select_one('div.section-content > div > h1').text.replace(u'\xa0',' ').replace('\t',' ')
-    print(title)
-
     keyword_list = getKeywords(title.lower())
+    _keyword = ",".join(keyword_list)
     created_at = content_soup.find("time")['datetime'].split("T")[0]
 
     content = ""
@@ -53,13 +52,12 @@ def getData(file, link):
         contents = s.find_all("p")
         for c in contents:
             content += c.text
-            content += "\n\n"
     content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ')
 
     # print(content)
     # result = dict(link=link, created_at=created_at, title=title, content=content)
     source = "medium"
-    file.writerow([link, created_at, title, content, source])
+    file.writerow([title, content, link, source, _keyword, "NULL", created_at])
     # return result
 
 
@@ -68,7 +66,7 @@ link_list = getLinks()
 
 file = open("data/vingle.csv", "w", encoding='utf-8', newline='')
 writefile = csv.writer(file)
-writefile.writerow(["url", "createdAt", "title", "content", "source"])
+writefile.writerow(["title", "content", "url", "source", "keyword", "image", "createdAt"])
 for i in range(len(link_list)):
     getData(writefile, link_list[i])
 file.close()
