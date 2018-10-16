@@ -32,7 +32,7 @@ def getKeywords(title):
     word_of_title = except_hangul.findall(title)
 
     keywords = []
-    topic_list = []
+    # topic_list = []
 
     for word in word_of_title:
         if word.isalpha():
@@ -47,13 +47,13 @@ def getKeywords(title):
                 topic = r.find_all("a", {"class": "topic-tag"})
                 for t in topic:
                     # print(t.text.strip())
-                    topic_list.append(t.text.strip())
+                    # topic_list.append(t.text.strip())
 
                     # print(" is Keyword")
                     keywords.append(word)
-                    topic_list.clear()
+                    # topic_list.clear()
                     break
-            topic_list.clear()
+            # topic_list.clear()
 
     print(keywords)
     return keywords
