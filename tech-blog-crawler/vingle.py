@@ -18,7 +18,7 @@ def getLinks():
 
     select_sorting = driver.find_element_by_xpath("//div[4]/button/span")
     select_sorting.click()
-    driver.implicitly_wait(1)
+    driver.implicitly_wait(3)
     sort_by_latest = driver.find_element_by_xpath("//li[3]/button")
     sort_by_latest.click()
 
@@ -27,6 +27,7 @@ def getLinks():
     source = driver.page_source
     soup = BeautifulSoup(source, "lxml")
 
+    link_list = []
     links = soup.find_all("div", {"class": "postArticle-readMore"})
     for l in links:
         link = l.find("a")
@@ -52,7 +53,7 @@ def getData(file, link):
         contents = s.find_all("p")
         for c in contents:
             content += c.text
-    content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ')
+    content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
 
     # print(content)
     # result = dict(link=link, created_at=created_at, title=title, content=content)
@@ -60,17 +61,16 @@ def getData(file, link):
     file.writerow([title, content, link, source, _keyword, "NULL", created_at])
     # return result
 
+if __name__ == "__main__":
+    link_list = getLinks()
 
-link_list = list()
-link_list = getLinks()
+    file = open("data/vingle.csv", "w", encoding='utf-8', newline='')
+    writefile = csv.writer(file)
+    writefile.writerow(["title", "content", "url", "source", "keyword", "image", "createdAt"])
+    for i in range(len(link_list)):
+        getData(writefile, link_list[i])
+    file.close()
 
-file = open("data/vingle.csv", "w", encoding='utf-8', newline='')
-writefile = csv.writer(file)
-writefile.writerow(["title", "content", "url", "source", "keyword", "image", "createdAt"])
-for i in range(len(link_list)):
-    getData(writefile, link_list[i])
-file.close()
-
-    # with open(result['created_at'] + "-" + .replace("/", ",") + ".json", 'w') as outfile:
-    #    json.dump(result, outfile)
-    # output = json.dumps(result)
+        # with open(result['created_at'] + "-" + .replace("/", ",") + ".json", 'w') as outfile:
+        #    json.dump(result, outfile)
+        # output = json.dumps(result)

@@ -1,17 +1,19 @@
 import requests
-import os
 import csv
 from bs4 import BeautifulSoup
 import sys
 sys.path.insert(0, '../keyword-module')
 from get_keyword import getKeywords
 
+# TODO
+# img 태그 검색
 
 def getLinks():
     r = requests.get("http://woowabros.github.io/")
     source = r.text
     soup = BeautifulSoup(source, "lxml")
 
+    link_list = []
     links = soup.find_all("div", {"class": "list-module"})
     for l in links:
         link = l.find("a")
@@ -36,17 +38,17 @@ def getData(file, link):
         contents = s.find_all("p")
         for c in contents:
             content += c.text
-    content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ')
+    content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
     source = "woowabros"
     file.writerow([title, content, link, source, _keyword, "NULL", created_at])
 
 
-link_list = list()
-link_list = getLinks()
+if __name__ == "__main__":
+    link_list = getLinks()
 
-file = open("data/woowabros.csv", "w", encoding='utf-8', newline='')
-writefile = csv.writer(file)
-writefile.writerow(["title", "content", "url", "source", "keyword", "image", "createdAt"])
-for i in range(len(link_list)):
-    getData(writefile, link_list[i])
-file.close()
+    file = open("data/woowabros.csv", "w", encoding='utf-8', newline='')
+    writefile = csv.writer(file)
+    writefile.writerow(["title", "content", "url", "source", "keyword", "image", "createdAt"])
+    for i in range(len(link_list)):
+        getData(writefile, link_list[i])
+    file.close()
