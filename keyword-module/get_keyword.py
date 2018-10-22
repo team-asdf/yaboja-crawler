@@ -3,6 +3,8 @@
 # from konlpy.utils import pprint
 import re
 import requests
+import json
+import time
 from bs4 import BeautifulSoup
 
 # TODO
@@ -57,6 +59,31 @@ def getKeywords(title):
 
     print(keywords)
     return keywords
+
+
+def githubTopicSearch(title):
+    except_hangul = re.compile('[^ ㄱ-ㅣ가-힣]+')
+    word_of_title = except_hangul.findall(title)
+    keywords = []
+
+    for word in word_of_title:
+        headers = {'User-Agent': 'Test', "Accept": "application/vnd.github.mercy-preview+json"}
+        params = {'q': word + '+is:curated'}
+        res = requests.get("https://api.github.com/search/topics", headers=headers, params=params)
+        result_json = json.loads(res.text)
+        print(res.status_code)
+        try:
+            if result_json['items'][0]['score'] > 500:
+                print(result_json['items'][0]['name'])
+                keywords.append(word)
+        except IndexError:
+            print("No English words")
+        time.sleep(8)
+
+    return keywords
+
+if __name__ == "__main__":
+    githubTopicSearch("Search Service in Serverless Architecture")
 
 
 # print(result)

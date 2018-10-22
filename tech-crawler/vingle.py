@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import sys
 sys.path.insert(0, '../keyword-module')
-from get_keyword import getKeywords
+from get_keyword import getKeywords, githubTopicSearch
 
 
 def getLinks():
@@ -44,6 +44,7 @@ def getData(file, link):
 
     title = content_soup.select_one('div.section-content > div > h1').text.replace(u'\xa0',' ').replace('\t',' ')
     keyword_list = getKeywords(title.lower())
+    # keyword_list = githubTopicSearch(title.lower())
     _keyword = ",".join(keyword_list)
     created_at = content_soup.find("time")['datetime'].split("T")[0]
 

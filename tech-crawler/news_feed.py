@@ -32,8 +32,8 @@ def feed_parsing(file):
             content = clean_html(d['entries'][i]['description'])
             link = d['entries'][i]['link']
             source = general_url.search(d['entries'][i]['link']).group().split('.')[1]
-            keyword_list = getKeywords(title.lower())
-            _keyword = ",".join(keyword_list)
+            #keyword_list = getKeywords(title.lower())
+            #_keyword = ",".join(keyword_list)
             created_at = time.strftime("%Y-%m-%dT%H:%M:%S", d['entries'][i].get("published_parsed", time.gmtime())).split("T")[0]
             
             file.writerow([title, content, link, source, "_keyword", "NULL", created_at])
