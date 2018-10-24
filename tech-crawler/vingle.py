@@ -6,6 +6,7 @@ from selenium import webdriver
 import sys
 sys.path.insert(0, '../keyword-module')
 from get_keyword import getKeywords, githubTopicSearch
+import time
 
 
 def getLinks():
@@ -14,7 +15,7 @@ def getLinks():
 
     driver = webdriver.Chrome(os.path.abspath("chromedriver.exe"), chrome_options=options)
     driver.get("https://medium.com/vingle-tech-blog/archive")
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(7)
 
     select_sorting = driver.find_element_by_xpath("//div[4]/button/span")
     select_sorting.click()
@@ -43,9 +44,8 @@ def getData(file, link):
     content_soup = BeautifulSoup(content_source, "lxml")
 
     title = content_soup.select_one('div.section-content > div > h1').text.replace(u'\xa0',' ').replace('\t',' ')
-    keyword_list = getKeywords(title.lower())
-    # keyword_list = githubTopicSearch(title.lower())
-    _keyword = ",".join(keyword_list)
+    # keyword_list = getKeywords(title.lower())
+    
     created_at = content_soup.find("time")['datetime'].split("T")[0]
 
     content = ""
@@ -56,6 +56,9 @@ def getData(file, link):
             content += c.text
     content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
 
+    keyword_list = githubTopicSearch(title.lower())
+    _keyword = ",".join(keyword_list)
+
     # print(content)
     # result = dict(link=link, created_at=created_at, title=title, content=content)
     source = "medium"
@@ -63,6 +66,8 @@ def getData(file, link):
     # return result
 
 if __name__ == "__main__":
+    start = time.time()
+
     link_list = getLinks()
 
     file = open("data/vingle.csv", "w", encoding='utf-8', newline='')
@@ -71,6 +76,8 @@ if __name__ == "__main__":
     for i in range(len(link_list)):
         getData(writefile, link_list[i])
     file.close()
+
+    print(time.time() - start)
 
         # with open(result['created_at'] + "-" + .replace("/", ",") + ".json", 'w') as outfile:
         #    json.dump(result, outfile)

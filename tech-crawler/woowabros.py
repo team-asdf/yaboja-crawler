@@ -3,7 +3,7 @@ import csv
 from bs4 import BeautifulSoup
 import sys
 sys.path.insert(0, '../keyword-module')
-from get_keyword import getKeywords
+from get_keyword import getKeywords, githubTopicSearch
 
 # TODO
 # img 태그 검색
@@ -28,7 +28,8 @@ def getData(file, link):
     content_soup = BeautifulSoup(content_source, "lxml")
 
     title = content_soup.find("h1", {"class": "post-title"}).text.replace(u'\xa0',' ').replace('\t',' ')
-    keyword_list = getKeywords(title.lower())
+    # keyword_list = getKeywords(title.lower())
+    keyword_list = githubTopicSearch(title.lower())
     _keyword = ",".join(keyword_list)
     created_at = content_soup.find("time")['datetime'].split("T")[0]
 

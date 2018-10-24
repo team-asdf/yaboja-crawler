@@ -1,15 +1,14 @@
-# from konlpy.tag import Kkma
-# from konlpy.tag import Twitter
-# from konlpy.utils import pprint
 import re
 import requests
 import json
 import time
 from bs4 import BeautifulSoup
 
+##############################################
 # TODO
 # 한글 단어 -> 영어 단어 변환
-
+# 정확도 어느정도 OK, but 속도 너무 느림
+##############################################
 
 #----------------------------------------------
 # github 토픽 존재 -> 유효성 확인?
@@ -20,16 +19,19 @@ from bs4 import BeautifulSoup
 # 4. 유효하지 않다면 컨텐츠에서 영단어 추출
 #----------------------------------------------
 
+#----------------------------------------------
+# by Github API
+# 단어 검색 -> 유사성 점수 500이상인 토픽 -> 유효한 키워드로 인정
+#----------------------------------------------
 
-# title = "Texture Best Practice".lower()
-
-# frequency = {}
-
-# spliter = Twitter()
-# nouns = spliter.nouns(title)
-# pprint(nouns)
 
 def getKeywords(title):
+    dataset = ['c#', 'c', 'c++', 'python', 'python3', 'anaconda', 'django', 'pandas', 'ruby', 
+    'java', 'javascript', 'ajax', 'jquery', 'nodejs', 'node.js', 'typescript', 'react', 'rxjs', 'spring', 
+    'jsp', 'angular', 'reactnative', 'php', 'json', 'vue', 'graphql', 'apollo', 'prisma', 'nextjs', 'web', 'html', 
+    'es', 'css', 'scss', 'sass', 'stylesheet', 'bootstrap', 'material', 'go', 'kotlin', 'r', 'swift', 'xml', 'vhdl', 'verilog', 'systemverilog',
+    'unity', 'unreal', 'mysql', 'mongodb', 'nosql', 'ios', 'android', 'ionic', 'cnn', 'rnn', 'lstm', 'blockchain', 'bitcoin', 'ethereum']
+
     except_hangul = re.compile('[^ ㄱ-ㅣ가-힣]+')
     word_of_title = except_hangul.findall(title)
 
@@ -47,8 +49,12 @@ def getKeywords(title):
             related = topic_soup.find_all("div", {"class": "col-md-4 mt-6 mt-md-0"})
             for r in related:
                 topic = r.find_all("a", {"class": "topic-tag"})
+                # print(topic)
                 for t in topic:
-                    # print(t.text.strip())
+                    #print(t.text.strip())
+                    #if t.text.strip() in dataset:
+                    #    keywords.append(t.text.strip())
+
                     # topic_list.append(t.text.strip())
 
                     # print(" is Keyword")
@@ -64,62 +70,53 @@ def getKeywords(title):
 def githubTopicSearch(title):
     except_hangul = re.compile('[^ ㄱ-ㅣ가-힣]+')
     word_of_title = except_hangul.findall(title)
+    # word_of_content = except_hangul.findall(content)
     keywords = []
 
     for word in word_of_title:
         headers = {'User-Agent': 'Test', "Accept": "application/vnd.github.mercy-preview+json"}
-        params = {'q': word + '+is:curated'}
+        params = {'q': word + '+is:featured'}
         res = requests.get("https://api.github.com/search/topics", headers=headers, params=params)
+        if res.status_code == 403:
+            print("403 rate limit")
+            time.sleep(60)
+            res = requests.get("https://api.github.com/search/topics", headers=headers, params=params)
         result_json = json.loads(res.text)
-        print(res.status_code)
+        # print(res.status_code)
         try:
-            if result_json['items'][0]['score'] > 500:
-                print(result_json['items'][0]['name'])
-                keywords.append(word)
+            idx = 0
+            while result_json['items'][idx]['score'] > 500:
+                print(result_json['items'][idx]['name'])
+                keywords.append(result_json['items'][idx]['name'])
+                idx += 1
         except IndexError:
             print("No English words")
-        time.sleep(8)
-
+        time.sleep(7)
     return keywords
+'''
+    if not keywords:
+        for word in word_of_content:
+            headers = {'User-Agent': 'Test', "Accept": "application/vnd.github.mercy-preview+json"}
+            params = {'q': word + '+is:featured'}
+            res = requests.get("https://api.github.com/search/topics", headers=headers, params=params)
+            if res.status_code == 403:
+                print("403 rate limit")
+                time.sleep(60)
+                res = requests.get("https://api.github.com/search/topics", headers=headers, params=params)
+            result_json = json.loads(res.text)
+            # print(res.status_code)
+            try:
+                idx = 0
+                while result_json['items'][idx]['score'] > 750:
+                    print(result_json['items'][idx]['name'])
+                    keywords.append(result_json['items'][idx]['name'])
+                    idx += 1
+            except IndexError:
+                print("No English words")
+            time.sleep(5)
+'''
+    # return keywords
+
 
 if __name__ == "__main__":
-    githubTopicSearch("Search Service in Serverless Architecture")
-
-
-# print(result)
-
-# match_pattern = re.findall(r'\b[a-z]{3,20}\b', title) # 3~20글자 사이의 영단어 정규식으로 추출
-# pprint(match_pattern)
-
-'''
-for word in word_of_title:
-    if word.isalpha():
-        count = frequency.get(word, 0)
-        frequency[word] = count + 1
-
-sorted_dict = sorted(frequency.items(), key=lambda x:x[1], reverse=True) # 단어 Count순으로 정렬
-
-for words, count in sorted_dict:
-    if(count > 0):
-        print(words, count)
-
-        topic_list = []
-
-        res = requests.get("https://github.com/topics/" + words)
-        topic_source = res.text
-        topic_soup = BeautifulSoup(topic_source, 'lxml')
-
-        related = topic_soup.find_all("div", {"class": "col-md-4 mt-6 mt-md-0"})
-        for r in related:
-            topic = r.find_all("a", {"class": "topic-tag"})
-            for t in topic:
-                # print(t.text.strip())
-                topic_list.append(t.text.strip())
-
-        if not topic_list:
-            print("it is not keyword")
-'''
-
-
-
-
+    pass
