@@ -37,7 +37,7 @@ class RawTagger:
             self.tagger = tagger
         else:
             from konlpy.tag import Komoran
-            self.tagger = Komoran()
+            self.tagger = Komoran(userdic='./dic.txt')
         if type(textIter) == str:
             self.textIter = textIter.split('\n')
         else:
@@ -58,7 +58,7 @@ class RawTaggerReader:
             self.tagger = tagger
         else:
             from konlpy.tag import Komoran
-            self.tagger = Komoran()
+            self.tagger = Komoran(userdic='./dic.txt')
         self.filepath = filepath
         self.rgxSplitter = re.compile('([.!?:](?:["\']|(?![0-9])))')
 
