@@ -1,11 +1,11 @@
 import requests
-import os
 import csv
+import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import sys
 sys.path.insert(0, '../keyword-module')
-from get_keyword import getKeywords, githubTopicSearch
+from get_keyword import getKeywords_multi
 import time
 
 
@@ -44,8 +44,6 @@ def getData(file, link):
     content_soup = BeautifulSoup(content_source, "lxml")
 
     title = content_soup.select_one('div.section-content > div > h1').text.replace(u'\xa0',' ').replace('\t',' ')
-    # keyword_list = getKeywords(title.lower())
-    
     created_at = content_soup.find("time")['datetime'].split("T")[0]
 
     content = ""
@@ -56,14 +54,11 @@ def getData(file, link):
             content += c.text
     content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
 
-    keyword_list = githubTopicSearch(title.lower())
+    keyword_list = getKeywords_multi(title.lower(), content.lower())
     _keyword = ",".join(keyword_list)
-
-    # print(content)
-    # result = dict(link=link, created_at=created_at, title=title, content=content)
     source = "medium"
+
     file.writerow([title, content, link, source, _keyword, "NULL", created_at])
-    # return result
 
 if __name__ == "__main__":
     start = time.time()
