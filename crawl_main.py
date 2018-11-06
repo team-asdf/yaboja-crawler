@@ -1,9 +1,9 @@
 import os
 import csv
 
-from dev_blog_crawl.crawl_blog_inflearn_com_selenium import Inflearn
-from dev_blog_crawl.crawl_oracloud_kr import Oracle
-from dev_blog_crawl.crawl_subicura_com_bs4 import Subicura
+from crawl_blog_inflearn_com_selenium import Inflearn
+from crawl_oracloud_kr import Oracle
+from crawl_subicura_com_bs4 import Subicura
 
 
 crawl_list = [Inflearn(), Oracle(), Subicura()]

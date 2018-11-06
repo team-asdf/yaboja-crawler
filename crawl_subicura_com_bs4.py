@@ -1,10 +1,9 @@
 from bs4 import BeautifulSoup
 import requests
 import csv
-import re
 import io
+import re
 from text_rank import *
-from markdownify import markdownify as md
 
 
 class Subicura:
@@ -12,7 +11,7 @@ class Subicura:
         self.req = requests.get('https://subicura.com')
         self.html = self.req.text
         self.soup = BeautifulSoup(self.html, 'html.parser')
-        self.file = open("../csv/subicura.csv", "w", encoding='utf-8', newline='')
+        self.file = open("./csv/subicura.csv", "w", encoding='utf-8', newline='')
         self.write = csv.writer(self.file)
         self.write.writerow(["title", "content", "url", "cnt", "date", "source"])
 
@@ -20,7 +19,7 @@ class Subicura:
         print("Subicura Crawl Start")
         main_url = "https://subicura.com"
         information = self.soup.find_all("a", {"itemprop": "url"})
-
+        p = re.compile('[^가-힣0-9a-zA-Z|.|!|?\\s]')
         for target in information:
             sub_url = self.parse_url(str(target))
             title = self.parse_title(str(target))
@@ -28,7 +27,6 @@ class Subicura:
             soup = BeautifulSoup(req.text, 'html.parser')
             date = soup.find("time")
             date = self.parse_date(date.contents[0])
-
             content_list = soup.find_all("p")
             text = ""
             f = io.open("text.txt", mode="w", encoding="utf-8")
@@ -36,6 +34,7 @@ class Subicura:
                 text += each.get_text()
                 f.writelines(each.get_text())
             f.close()
+            text = p.sub("", text)
             self.extract_keyword()
             self.write.writerow([title, text[:200], main_url + sub_url, 0, date, "subicura"])
         self.file.close()
