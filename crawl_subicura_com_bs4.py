@@ -68,11 +68,13 @@ class Subicura:
         print('Build...')
         tr.build()
         kw = tr.extract(0.1)
+        keyword = "etc"
         for k in sorted(kw, key=kw.get, reverse=True):
             for each in k:
-                keyword = self.check_keyword(each[0])
-                return keyword
-            # print("%s\t%g" % (k, kw[k]))
+                temp_keyword = self.check_keyword(each[0])
+                if temp_keyword != "etc":
+                    keyword = temp_keyword
+        return keyword
 
     def check_keyword(self, keyword):
         for each in self.keyword_dict:
