@@ -2,8 +2,8 @@ from bs4 import BeautifulSoup
 import requests
 import csv
 import io
-import re
 from text_rank import *
+import json
 
 
 class Subicura:
@@ -13,13 +13,15 @@ class Subicura:
         self.soup = BeautifulSoup(self.html, 'html.parser')
         self.file = open("./csv/subicura.csv", "w", encoding='utf-8', newline='')
         self.write = csv.writer(self.file)
-        self.write.writerow(["title", "content", "url", "cnt", "date", "source"])
+        self.write.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
+        json_file = open("keywords.json", encoding="utf-8")
+        self.keyword_dict = json.load(json_file)
 
     def main(self):
         print("Subicura Crawl Start")
         main_url = "https://subicura.com"
         information = self.soup.find_all("a", {"itemprop": "url"})
-        p = re.compile('[^가-힣0-9a-zA-Z|.|!|?\\s]')
+        # p = re.compile('[^가-힣0-9a-zA-Z|.|!|?\\s]')
         for target in information:
             sub_url = self.parse_url(str(target))
             title = self.parse_title(str(target))
@@ -34,9 +36,9 @@ class Subicura:
                 text += each.get_text()
                 f.writelines(each.get_text())
             f.close()
-            text = p.sub("", text)
-            self.extract_keyword()
-            self.write.writerow([title, text[:200], main_url + sub_url, 0, date, "subicura"])
+            text = re.sub('[^가-힣0-9a-zA-Z|.|!|?\\s]', "", text)
+            keyword = self.extract_keyword()
+            self.write.writerow([title, text.split('.')[0], main_url + sub_url, 0, "subicura", keyword, "temp-img", date])
         self.file.close()
         print("Subicura Crawl End")
 
@@ -68,8 +70,15 @@ class Subicura:
         kw = tr.extract(0.1)
         for k in sorted(kw, key=kw.get, reverse=True):
             for each in k:
-                print(each)
+                keyword = self.check_keyword(each[0])
+                return keyword
             # print("%s\t%g" % (k, kw[k]))
+
+    def check_keyword(self, keyword):
+        for each in self.keyword_dict:
+            if keyword in self.keyword_dict[each]:
+                return each
+        return "etc"
 
 
 if __name__ == "__main__":

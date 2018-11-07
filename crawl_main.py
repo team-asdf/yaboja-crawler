@@ -17,7 +17,7 @@ def merge_files():
                 csv_list.append(file)
 
     temp_lst = list()
-    temp_lst.append(["title", "content", "url", "cnt", "date", "source"])
+    temp_lst.append(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
     for file in csv_list:
         raw = open("./csv/" + file, "r", encoding="utf-8")
         lst = list(csv.reader(raw))
