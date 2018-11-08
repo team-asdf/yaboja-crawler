@@ -4,6 +4,7 @@ import csv
 import io
 from text_rank import *
 import json
+import re
 
 
 class Subicura:
@@ -21,7 +22,7 @@ class Subicura:
         print("Subicura Crawl Start")
         main_url = "https://subicura.com"
         information = self.soup.find_all("a", {"itemprop": "url"})
-        # p = re.compile('[^가-힣0-9a-zA-Z|.|!|?\\s]')
+
         for target in information:
             sub_url = self.parse_url(str(target))
             title = self.parse_title(str(target))
@@ -31,14 +32,31 @@ class Subicura:
             date = self.parse_date(date.contents[0])
             content_list = soup.find_all("p")
             text = ""
+
             f = io.open("text.txt", mode="w", encoding="utf-8")
             for each in content_list:
                 text += each.get_text()
                 f.writelines(each.get_text())
             f.close()
             text = re.sub('[^가-힣0-9a-zA-Z|.|!|?\\s]', "", text)
-            keyword = self.extract_keyword()
-            self.write.writerow([title, text.split('.')[0], main_url + sub_url, 0, "subicura", keyword, "temp-img", date])
+
+            keyword_list = list(set(self.extract_keyword()))
+            keyword = ""
+            for idx in range(len(keyword_list)):
+                keyword += keyword_list[idx]
+                if idx != len(keyword_list) - 1:
+                    keyword += ","
+            if keyword == "":
+                keyword = "etc"
+            img_find = str(soup.find("img"))
+            print(img_find)
+            try:
+                img_find.index("subicura.com")
+            except:
+                img_link = "https://subicura.com/assets/images/background_image_2.jpg"
+            else:
+                img_link = img_find.split("src=\"")[1].split("\"/")[0]
+            self.write.writerow([title, text.split('.')[0], main_url + sub_url, 0, "subicura", keyword, img_link, date])
         self.file.close()
         print("Subicura Crawl End")
 
@@ -68,13 +86,15 @@ class Subicura:
         print('Build...')
         tr.build()
         kw = tr.extract(0.1)
-        keyword = "etc"
+        keyword_lst = []
         for k in sorted(kw, key=kw.get, reverse=True):
             for each in k:
                 temp_keyword = self.check_keyword(each[0])
-                if temp_keyword != "etc":
-                    keyword = temp_keyword
-        return keyword
+                if temp_keyword != "etc" and temp_keyword != "":
+                    keyword_lst.append(temp_keyword)
+                    # keyword = temp_keyword
+                    # return temp_keyword
+        return keyword_lst
 
     def check_keyword(self, keyword):
         for each in self.keyword_dict:
