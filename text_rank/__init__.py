@@ -8,7 +8,7 @@ class RawTaggerReader:
             self.tagger = tagger
         else:
             from konlpy.tag import Komoran
-            self.tagger = Komoran(userdic='./dic.txt')
+            self.tagger = Komoran(userdic='./text_rank/dic.txt')
         self.file_path = file_path
         self.rgxSplitter = re.compile('([.!?:](?:["\']|(?![0-9])))')
 
