@@ -7,7 +7,7 @@ class Oracle:
     def __init__(self):
         self.file = open("./csv/oracle.csv", "w", encoding='utf-8', newline='')
         self.write = csv.writer(self.file)
-        self.write.writerow(["title", "content", "url", "cnt", "date", "source"])
+        self.write.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
 
     def main(self):
         print("Oracle Crawl Start")
@@ -29,7 +29,7 @@ class Oracle:
                 temp_html = requests.get(url).text
                 time = temp_html.split("datetime=\"")[1][:10]
                 # print(time)
-                self.write.writerow([title, "temp", url, 0, time, "oracloud"])
+                self.write.writerow([title, "temp", url, 0, "oracloud", "temp", "temp", time])
 
             idx += 1
         print("Oracle Crawl End")
