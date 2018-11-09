@@ -3,7 +3,7 @@ import csv
 
 # from crawl_blog_inflearn_com_selenium import Inflearn
 from crawl_oracloud_kr import Oracle
-from crawl_subicura_com_bs4 import Subicura
+from crawl_subicura_com import Subicura
 
 
 crawl_list = [Oracle(), Subicura()]
@@ -42,9 +42,9 @@ def main():
     print("Full Operation Start")
     for each in crawl_list:
         crawl(each)
+    merge_files()
     print("Full Operation End")
 
 
 if __name__ == "__main__":
     main()
-    merge_files()
