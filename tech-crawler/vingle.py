@@ -2,39 +2,32 @@ import requests
 import csv
 import os
 from bs4 import BeautifulSoup
-from selenium import webdriver
-import sys
-sys.path.insert(0, '../keyword-module')
-from get_keyword import getKeywords_multi
+from get_keyword import getKeywordsForMulti
 import time
 
 
 def getLinks():
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-
-    driver = webdriver.Chrome(os.path.abspath("chromedriver.exe"), chrome_options=options)
-    driver.get("https://medium.com/vingle-tech-blog/archive")
-    driver.implicitly_wait(7)
-
-    select_sorting = driver.find_element_by_xpath("//div[4]/button/span")
-    select_sorting.click()
-    driver.implicitly_wait(3)
-    sort_by_latest = driver.find_element_by_xpath("//li[3]/button")
-    sort_by_latest.click()
-
-    # r = requests.get("https://medium.com/vingle-tech-blog/archive")
-    # source = r.text
-    source = driver.page_source
-    soup = BeautifulSoup(source, "lxml")
-
     link_list = []
+    already_list = []
+
+    try:
+        f = open("data/vingle.csv", "r", encoding='utf-8')
+        rdr = csv.reader(f)
+        for line in rdr:
+            already_list.append(line[2])
+    except FileNotFoundError:
+        pass
+    
+    r = requests.get("https://medium.com/vingle-tech-blog/archive")
+    source = r.text
+    soup = BeautifulSoup(source, "lxml")
     links = soup.find_all("div", {"class": "postArticle-readMore"})
+
     for l in links:
         link = l.find("a")
-        link_list.append(link['href'])
+        if link['href'] not in already_list:
+            link_list.append(link['href'])
 
-    # print(link_list)
     return link_list
 
 
@@ -53,27 +46,32 @@ def getData(file, link):
         for c in contents:
             content += c.text
     content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
+    source = "vingle"
 
-    keyword_list = getKeywords_multi(title.lower(), content.lower())
-    _keyword = ",".join(keyword_list)
-    source = "medium"
+    keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source)
+    if keyword_list:
+        _keyword = ",".join(keyword_list)
+    else:
+        _keyword = ""
 
-    file.writerow([title, content, link, source, _keyword, "NULL", created_at])
+    file.writerow([title, content, link, 0, source, _keyword, "NULL", created_at])
 
-if __name__ == "__main__":
+
+def main():
+    print("vingle")
     start = time.time()
 
     link_list = getLinks()
 
     file = open("data/vingle.csv", "w", encoding='utf-8', newline='')
     writefile = csv.writer(file)
-    writefile.writerow(["title", "content", "url", "source", "keyword", "image", "createdAt"])
+    writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
     for i in range(len(link_list)):
         getData(writefile, link_list[i])
     file.close()
 
     print(time.time() - start)
 
-        # with open(result['created_at'] + "-" + .replace("/", ",") + ".json", 'w') as outfile:
-        #    json.dump(result, outfile)
-        # output = json.dumps(result)
+
+if __name__ == "__main__":
+    main()
