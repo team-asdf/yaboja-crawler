@@ -9,7 +9,7 @@ import time
 
 def getLinks():
     options = webdriver.ChromeOptions()
-    #options.add_argument('headless')
+    options.add_argument('headless')
 
     driver = webdriver.Chrome(os.path.abspath("chromedriver.exe"), chrome_options=options)
     driver.get("https://medium.com/netflix-techblog")
@@ -41,8 +41,12 @@ def getLinks():
         rdr = csv.reader(f)
         for line in rdr:
             already_list.append(line[2])
+        f.close()
     except FileNotFoundError:
-        pass
+        f = open("data/netflix.csv", "w", encoding='utf-8', newline='')
+        writefile = csv.writer(f)
+        writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
+        f.close()
     
     source = driver.page_source
     soup = BeautifulSoup(source, "lxml")
@@ -53,19 +57,19 @@ def getLinks():
 
     for l in links_1:
         link = l.find("a")
-        print(link['href'])
+        # print(link['href'])
         if link['href'] not in already_list:
             link_list.append(link['href'])
 
     for l in links_2:
         link = l.find("a")
-        print(link['href'])
+        # print(link['href'])
         if link['href'] not in already_list:
             link_list.append(link['href'])
 
     for l in links_3:
         link = l.find("a")
-        print(link['href'])
+        # print(link['href'])
         if link['href'] not in already_list:
             link_list.append(link['href'])
 
@@ -104,9 +108,8 @@ def main():
 
     link_list = getLinks()
 
-    file = open("data/netflix.csv", "w", encoding='utf-8', newline='')
+    file = open("data/netflix.csv", "a", encoding='utf-8', newline='')
     writefile = csv.writer(file)
-    writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
     for i in range(len(link_list)):
         getData(writefile, link_list[i])
     file.close()

@@ -14,8 +14,12 @@ def getLinks():
         rdr = csv.reader(f)
         for line in rdr:
             already_list.append(line[2])
+        f.close()
     except FileNotFoundError:
-        pass
+        f = open("data/vingle.csv", "w", encoding='utf-8', newline='')
+        writefile = csv.writer(f)
+        writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
+        f.close()
     
     r = requests.get("https://medium.com/vingle-tech-blog/archive")
     source = r.text
@@ -62,9 +66,8 @@ def main():
 
     link_list = getLinks()
 
-    file = open("data/vingle.csv", "w", encoding='utf-8', newline='')
+    file = open("data/vingle.csv", "a", encoding='utf-8', newline='')
     writefile = csv.writer(file)
-    writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
     for i in range(len(link_list)):
         getData(writefile, link_list[i])
     file.close()

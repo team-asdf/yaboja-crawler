@@ -1,23 +1,35 @@
 import requests
 import csv
 from bs4 import BeautifulSoup
-import sys
-sys.path.insert(0, '../keyword-module')
-from get_keyword import getKeywords_multi
+from get_keyword import getKeywordsForMulti
+import time
 
-# TODO
-# img 태그 검색
 
 def getLinks():
+    link_list = []
+    already_list = []
+
+    try:
+        f = open("data/woowabros.csv", "r", encoding='utf-8')
+        rdr = csv.reader(f)
+        for line in rdr:
+            already_list.append(line[2])
+        f.close()
+    except FileNotFoundError:
+        f = open("data/woowabros.csv", "w", encoding='utf-8', newline='')
+        writefile = csv.writer(f)
+        writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
+        f.close()
+            
     r = requests.get("http://woowabros.github.io/")
     source = r.text
     soup = BeautifulSoup(source, "lxml")
-
-    link_list = []
     links = soup.find_all("div", {"class": "list-module"})
+
     for l in links:
         link = l.find("a")
-        link_list.append("http://woowabros.github.io" + link['href'])
+        if "http://woowabros.github.io" + link['href'] not in already_list:
+            link_list.append("http://woowabros.github.io" + link['href'])
 
     return link_list
 
@@ -37,20 +49,31 @@ def getData(file, link):
         for c in contents:
             content += c.text
     content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
-
-    keyword_list = getKeywords_multi(title.lower(), content.lower())
-    _keyword = ",".join(keyword_list)
     source = "woowabros"
 
-    file.writerow([title, content, link, source, _keyword, "NULL", created_at])
+    keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source)
+    if keyword_list:
+        _keyword = ",".join(keyword_list)
+    else:
+        _keyword = ""
+
+    file.writerow([title, content, link, 0, source, _keyword, "NULL", created_at])
 
 
-if __name__ == "__main__":
+def main():
+    print("woowabros")
+    start = time.time()
+
     link_list = getLinks()
 
-    file = open("data/woowabros.csv", "w", encoding='utf-8', newline='')
+    file = open("data/woowabros.csv", "a", encoding='utf-8', newline='')
     writefile = csv.writer(file)
-    writefile.writerow(["title", "content", "url", "source", "keyword", "image", "createdAt"])
     for i in range(len(link_list)):
         getData(writefile, link_list[i])
     file.close()
+
+    print(time.time() - start)
+
+
+if __name__ == "__main__":
+    main()

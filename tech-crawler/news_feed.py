@@ -1,9 +1,7 @@
 import feedparser
 import re
 import csv
-import sys
-sys.path.insert(0, '../keyword-module')
-from get_keyword import getKeywords
+from get_keyword import getKeywordsForMulti
 import time
 
 
@@ -29,19 +27,27 @@ def feed_parsing(file):
 
         for i in range(len(d.entries)):
             title = d['entries'][i]['title']
-            content = clean_html(d['entries'][i]['description'])
+            content = clean_html(d['entries'][i]['description']).replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
             link = d['entries'][i]['link']
             source = general_url.search(d['entries'][i]['link']).group().split('.')[1]
-            #keyword_list = getKeywords(title.lower())
-            #_keyword = ",".join(keyword_list)
+            keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source, False)
+            if keyword_list:
+                _keyword = ",".join(keyword_list)
+            else:
+                _keyword = ""
             created_at = time.strftime("%Y-%m-%dT%H:%M:%S", d['entries'][i].get("published_parsed", time.gmtime())).split("T")[0]
             
-            file.writerow([title, content, link, source, "_keyword", "NULL", created_at])
+            file.writerow([title, content, link, 0, source, _keyword, "NULL", created_at])
+
+
+def main():
+    print("news_feed")
+    file = open("data/news_feed.csv", "w", encoding='utf-8', newline='')
+    writefile = csv.writer(file)
+    writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
+    feed_parsing(writefile)
+    file.close()
 
 
 if __name__ == "__main__":
-    file = open("data/news_feed.csv", "w", encoding='utf-8', newline='')
-    writefile = csv.writer(file)
-    writefile.writerow(["title", "content", "url", "source", "keyword", "image", "createdAt"])
-    feed_parsing(writefile)
-    file.close()
+    main()
