@@ -1,6 +1,5 @@
 import requests
 import csv
-import os
 from bs4 import BeautifulSoup
 from get_keyword import getKeywordsForMulti
 import time
