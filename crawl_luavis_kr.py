@@ -95,6 +95,8 @@ class Luavis:
         data = data.split("\">")[1].split("</p>")[0]
         data = data.split()
         data[1] = data[1][:-1]
+        if len(data[1]) == 1:
+            data[1] = "0" + data[1]
         return_data += data[2] + "-" + month_dic[data[0]] + "-" + data[1]
         # print(return_data)
         return return_data
