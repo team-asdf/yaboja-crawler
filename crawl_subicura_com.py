@@ -56,7 +56,7 @@ class Subicura:
                 img_link = "https://subicura.com/assets/images/background_image_2.jpg"
             else:
                 img_link = img_find.split("src=\"")[1].split("\"/")[0]
-            self.write.writerow([title, text.split('.')[0], main_url + sub_url, 0, "subicura", keyword, img_link, date])
+            self.write.writerow([title, text[:200], main_url + sub_url, 0, "subicura", keyword, img_link, date])
         self.file.close()
         print("Subicura Crawl End")
 

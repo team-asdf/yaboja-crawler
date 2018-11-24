@@ -1,12 +1,11 @@
 import os
 import csv
 
-# from crawl_blog_inflearn_com_selenium import Inflearn
-from crawl_oracloud_kr import Oracle
+from crawl_luavis_kr import Luavis
 from crawl_subicura_com import Subicura
 
 
-crawl_list = [Oracle(), Subicura()]
+crawl_list = [Luavis(), Subicura()]
 
 
 def merge_files():
