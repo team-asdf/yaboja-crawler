@@ -1,11 +1,13 @@
 import os
 import csv
+import time
 
 from crawl_luavis_kr import Luavis
 from crawl_subicura_com import Subicura
+from crawl_mingrammer_com import Mingrammer
 
 
-crawl_list = [Luavis(), Subicura()]
+crawl_list = [Luavis(), Subicura(), Mingrammer()]
 
 
 def merge_files():
@@ -38,11 +40,13 @@ def crawl(target):
 
 
 def main():
+    start = time.time()
     print("Full Operation Start")
     for each in crawl_list:
         crawl(each)
     merge_files()
     print("Full Operation End")
+    print("Time Elapsed:", int(time.time() - start))
 
 
 if __name__ == "__main__":
