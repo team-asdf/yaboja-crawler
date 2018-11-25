@@ -3,6 +3,8 @@ import re
 import csv
 from get_keyword import getKeywordsForMulti
 import time
+import os
+import ssl
 
 
 def clean_html(raw_html):
@@ -17,6 +19,9 @@ def clean_html(raw_html):
 
 
 def feed_parsing(file):
+    if hasattr(ssl, '_create_unverified_context'):
+        ssl._create_default_https_context = ssl._create_unverified_context  # to solve SSLCertVerificationError problem
+
     link_list = ['https://www.computerworld.com/index.rss', 'https://www.recode.net/rss/index.xml']
     general_url = re.compile('(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}')
 
@@ -24,7 +29,6 @@ def feed_parsing(file):
         d = feedparser.parse(link)
         
         # print(source)
-
         for i in range(len(d.entries)):
             title = d['entries'][i]['title']
             content = clean_html(d['entries'][i]['description']).replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
@@ -35,16 +39,16 @@ def feed_parsing(file):
                 _keyword = ",".join(keyword_list)
             else:
                 _keyword = ""
-            created_at = time.strftime("%Y-%m-%dT%H:%M:%S", d['entries'][i].get("published_parsed", time.gmtime())).split("T")[0]
+            created_at = time.strftime("%Y-%m-%d", d['entries'][i].get("published_parsed", time.gmtime())).split("T")[0]
             
-            file.writerow([title, content, link, 0, source, _keyword, "NULL", created_at])
+            file.writerow([title, content, link, 0, source, _keyword, "NULL", created_at, 0])
 
 
 def main():
     print("news_feed")
-    file = open("data/news_feed.csv", "w", encoding='utf-8', newline='')
+    file = open(os.path.dirname(os.path.realpath(__file__)) + "/data/news_feed.csv", "w", encoding='utf-8', newline='')
     writefile = csv.writer(file)
-    writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
+    writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt", "priority"])
     feed_parsing(writefile)
     file.close()
 

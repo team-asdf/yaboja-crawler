@@ -3,6 +3,8 @@ import csv
 from bs4 import BeautifulSoup
 from get_keyword import getKeywordsForMulti
 import time
+import os
+import datetime
 
 
 def getLinks():
@@ -10,26 +12,28 @@ def getLinks():
     already_list = []
 
     try:
-        f = open("data/vingle.csv", "r", encoding='utf-8')
+        f = open(os.path.dirname(os.path.realpath(__file__)) + "/data/vingle.csv", "r", encoding='utf-8')
         rdr = csv.reader(f)
         for line in rdr:
             already_list.append(line[2])
         f.close()
     except FileNotFoundError:
-        f = open("data/vingle.csv", "w", encoding='utf-8', newline='')
+        f = open(os.path.dirname(os.path.realpath(__file__)) + "/data/vingle.csv", "w", encoding='utf-8', newline='')
         writefile = csv.writer(f)
-        writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
+        writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt", "priority"])
         f.close()
-    
-    r = requests.get("https://medium.com/vingle-tech-blog/archive")
-    source = r.text
-    soup = BeautifulSoup(source, "lxml")
-    links = soup.find_all("div", {"class": "postArticle-readMore"})
 
-    for l in links:
-        link = l.find("a")
-        if link['href'] not in already_list:
-            link_list.append(link['href'])
+    d = datetime.date.today()
+    for i in range(2016, d.year+1):
+        r = requests.get("https://medium.com/vingle-tech-blog/archive" + "/" + str(i))
+        source = r.text
+        soup = BeautifulSoup(source, "lxml")
+        links = soup.find_all("div", {"class": "postArticle-readMore"})
+
+        for l in links:
+            link = l.find("a")
+            if link['href'] not in already_list:
+                link_list.append(link['href'])
 
     return link_list
 
@@ -57,7 +61,7 @@ def getData(file, link):
     else:
         _keyword = ""
 
-    file.writerow([title, content, link, 0, source, _keyword, "NULL", created_at])
+    file.writerow([title, content, link, 0, source, _keyword, "NULL", created_at, 0])
 
 
 def main():
@@ -66,7 +70,7 @@ def main():
 
     link_list = getLinks()
 
-    file = open("data/vingle.csv", "a", encoding='utf-8', newline='')
+    file = open(os.path.dirname(os.path.realpath(__file__)) + "/data/vingle.csv", "a", encoding='utf-8', newline='')
     writefile = csv.writer(file)
     for i in range(len(link_list)):
         getData(writefile, link_list[i])

@@ -11,7 +11,7 @@ def getLinks():
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
 
-    driver = webdriver.Chrome(os.path.abspath("chromedriver.exe"), chrome_options=options)
+    driver = webdriver.Chrome(os.path.dirname(os.path.realpath(__file__)) + "/chromedriver", chrome_options=options)
     driver.get("https://medium.com/netflix-techblog")
     driver.implicitly_wait(7)
 
@@ -37,19 +37,20 @@ def getLinks():
     already_list = []
 
     try:
-        f = open("data/netflix.csv", "r", encoding='utf-8')
+        f = open(os.path.dirname(os.path.realpath(__file__)) + "/data/netflix.csv", "r", encoding='utf-8')
         rdr = csv.reader(f)
         for line in rdr:
             already_list.append(line[2])
         f.close()
     except FileNotFoundError:
-        f = open("data/netflix.csv", "w", encoding='utf-8', newline='')
+        f = open(os.path.dirname(os.path.realpath(__file__)) + "/data/netflix.csv", "w", encoding='utf-8', newline='')
         writefile = csv.writer(f)
-        writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
+        writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt", "priority"])
         f.close()
     
     source = driver.page_source
     soup = BeautifulSoup(source, "lxml")
+    driver.close()
     
     links_1 = soup.find_all("div", {"class": "col u-xs-marginBottom10 u-paddingLeft9 u-paddingRight12 u-paddingTop0 u-sm-paddingTop20 u-paddingBottom25 u-size4of12 u-xs-size12of12 u-marginBottom30"})
     links_2 = soup.find_all("div", {"class": "u-lineHeightBase postItem"})
@@ -99,7 +100,7 @@ def getData(file, link):
     else:
         _keyword = ""
 
-    file.writerow([title, content, link, 0, source, _keyword, "NULL", created_at])
+    file.writerow([title, content, link, 0, source, _keyword, "NULL", created_at, 0])
 
 
 def main():
@@ -108,7 +109,7 @@ def main():
 
     link_list = getLinks()
 
-    file = open("data/netflix.csv", "a", encoding='utf-8', newline='')
+    file = open(os.path.dirname(os.path.realpath(__file__)) + "/data/netflix.csv", "a", encoding='utf-8', newline='')
     writefile = csv.writer(file)
     for i in range(len(link_list)):
         getData(writefile, link_list[i])

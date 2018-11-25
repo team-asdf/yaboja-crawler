@@ -12,7 +12,7 @@ from multiprocessing import Manager, Pool
 manager = Manager()
 L = manager.list()
 
-with open(os.path.abspath("keywords.json"), 'r') as f:
+with open(os.path.dirname(os.path.realpath(__file__)) + "/keywords.json", 'r') as f:
     data = json.load(f)
 
 
@@ -64,7 +64,7 @@ def getKeywordsForMulti(title, content, source, korean=True):
                 words.append(t)
 
     for t in word_of_content:
-        if len(words) > 50:
+        if len(words) > 20:
             break
         if t.isalpha() and t != source:
             if 3 <= len(t) <= 16:
@@ -72,6 +72,7 @@ def getKeywordsForMulti(title, content, source, korean=True):
 
     words = list(set(words))
     print(len(words))
+    print(words)
 
     pool = Pool(processes=8)
     pool.map(getKeywordsForProcess, words)
