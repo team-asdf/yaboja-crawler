@@ -46,7 +46,15 @@ class Luavis:
                     keyword += ","
             if keyword == "":
                 keyword = "etc"
-            image = self.main_url + str(temp_soup.find("img")).split("src=\"")[1].split("\"/>")[0]
+            image_list = temp_soup.find_all("img")
+            image = ""
+            for each in image_list:
+                if "static" not in str(each):
+                    if "https" in str(each):
+                        image = self.parse_url(str(each))
+                    else:
+                        image = self.main_url + self.parse_url(str(each))
+                    break
             print(image)
             createdAt = self.parse_date(str(temp_soup.find("p", {"class": "post-meta"})))
             self.write.writerow([title, content[:200], url, cnt, source, keyword, image, createdAt])
@@ -100,6 +108,14 @@ class Luavis:
         return_data += data[2] + "-" + month_dic[data[0]] + "-" + data[1]
         # print(return_data)
         return return_data
+
+    def parse_url(self, data):
+        data = data.split("src=\"")[1].split("\"/>")[0]
+        if "width" in data:
+            data = data.split("\" width")[0]
+        if "\">" in data:
+            data = data.split("\">")[0]
+        return data
 
 
 if __name__ == "__main__":
