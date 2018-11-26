@@ -18,6 +18,13 @@ class Mingrammer:
         json_file.close()
 
     def crawl(self):
+        try:
+            main_file = open("./csv/main.csv", 'r', encoding="utf-8")
+        except FileNotFoundError:
+            main_list = []
+        else:
+            main_list = list(csv.reader(main_file))
+            main_file.close()
         for i in range(1, 5):
             if i == 1:
                 page_url = self.main_url
@@ -40,7 +47,7 @@ class Mingrammer:
 
                 cnt = 0
                 source = "mingrammer"
-                keyword_list = list(set(self.extract_keyword(content)))
+                keyword_list = sorted(list(set(self.extract_keyword(content))))
                 keyword = ""
                 for idx in range(len(keyword_list)):
                     keyword += keyword_list[idx]
@@ -62,7 +69,10 @@ class Mingrammer:
 
                 priority = 0
                 createdAt = self.parse_date(str(temp_soup.find("h2", {"class": "headline"}).text).split()[:3])
-                self.write.writerow([title, content[:199] + "...", url, cnt, source, keyword, image, createdAt, priority])
+                write_data = [title, content[:199] + "...", url, cnt, source, keyword, image, createdAt, priority]
+                if write_data in main_list:
+                    break
+                self.write.writerow(write_data)
         self.file.close()
 
     def extract_keyword(self, text):

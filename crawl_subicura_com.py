@@ -19,6 +19,13 @@ class Subicura:
         self.keyword_dict = json.load(json_file)
 
     def main(self):
+        try:
+            main_file = open("./csv/main.csv", 'r', encoding="utf-8")
+        except FileNotFoundError:
+            main_list = []
+        else:
+            main_list = list(csv.reader(main_file))
+            main_file.close()
         print("Subicura Crawl Start")
         main_url = "https://subicura.com"
         information = self.soup.find_all("a", {"itemprop": "url"})
@@ -40,7 +47,7 @@ class Subicura:
             f.close()
             text = re.sub('[^가-힣0-9a-zA-Z|.|!|?\\s]', "", text)
 
-            keyword_list = list(set(self.extract_keyword()))
+            keyword_list = sorted(list(set(self.extract_keyword())))
             keyword = ""
             for idx in range(len(keyword_list)):
                 keyword += keyword_list[idx]
@@ -56,7 +63,10 @@ class Subicura:
             else:
                 img_link = img_find.split("src=\"")[1].split("\"/")[0]
             priority = 0
-            self.write.writerow([title, text[:199] + "...", main_url + sub_url, 0, "subicura", keyword, img_link, date, priority])
+            write_data = [title, text[:199] + "...", main_url + sub_url, 0, "subicura", keyword, img_link, date, priority]
+            if write_data in main_list:
+                break
+            self.write.writerow(write_data)
         self.file.close()
         print("Subicura Crawl End")
 

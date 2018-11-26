@@ -18,6 +18,14 @@ class Luavis:
         json_file.close()
 
     def crawl(self):
+        try:
+            main_file = open("./csv/main.csv", 'r', encoding="utf-8")
+        except FileNotFoundError:
+            main_list = []
+        else:
+            main_list = list(csv.reader(main_file))
+            main_file.close()
+        print(main_list)
         req = requests.get("https://b.luavis.kr/")
         html = req.text
         soup = BeautifulSoup(html, 'html.parser')
@@ -38,7 +46,7 @@ class Luavis:
             url = self.main_url + sub_url
             cnt = 0
             source = "Luavis' Dev Story"
-            keyword_list = list(set(self.extract_keyword(content)))
+            keyword_list = sorted(list(set(self.extract_keyword(content))))
             keyword = ""
             for idx in range(len(keyword_list)):
                 keyword += keyword_list[idx]
@@ -58,7 +66,10 @@ class Luavis:
             print(image)
             priority = 0
             createdAt = self.parse_date(str(temp_soup.find("p", {"class": "post-meta"})))
-            self.write.writerow([title, content[:199] + "...", url, cnt, source, keyword, image, createdAt, priority])
+            write_data = [title, content[:199] + "...", url, cnt, source, keyword, image, createdAt, priority]
+            if write_data in main_list:
+                break
+            self.write.writerow(write_data)
         self.file.close()
 
     def extract_keyword(self, text):
