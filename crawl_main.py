@@ -30,6 +30,7 @@ def merge_files():
     writer = csv.writer(write)
 
     for each in temp_lst:
+        each = each.replace("\"", "")
         writer.writerow(each)
 
     write.close()

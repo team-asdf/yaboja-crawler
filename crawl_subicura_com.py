@@ -14,7 +14,7 @@ class Subicura:
         self.soup = BeautifulSoup(self.html, 'html.parser')
         self.file = open("./csv/subicura.csv", "w", encoding='utf-8', newline='')
         self.write = csv.writer(self.file)
-        self.write.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
+        self.write.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt", "priority"])
         json_file = open("keywords.json", encoding="utf-8")
         self.keyword_dict = json.load(json_file)
 
@@ -35,8 +35,8 @@ class Subicura:
 
             f = io.open("text.txt", mode="w", encoding="utf-8")
             for each in content_list:
-                text += each.get_text()
-                f.writelines(each.get_text())
+                text += each.get_text().lstrip().rstrip().replace("\n", " ")
+                f.writelines(each.get_text().rstrip())
             f.close()
             text = re.sub('[^가-힣0-9a-zA-Z|.|!|?\\s]', "", text)
 
@@ -49,14 +49,14 @@ class Subicura:
             if keyword == "":
                 keyword = "etc"
             img_find = str(soup.find("img"))
-            print(img_find)
             try:
                 img_find.index("subicura.com")
             except:
                 img_link = "https://subicura.com/assets/images/background_image_2.jpg"
             else:
                 img_link = img_find.split("src=\"")[1].split("\"/")[0]
-            self.write.writerow([title, text[:200], main_url + sub_url, 0, "subicura", keyword, img_link, date])
+            priority = 0
+            self.write.writerow([title, text[:199] + "...", main_url + sub_url, 0, "subicura", keyword, img_link, date, priority])
         self.file.close()
         print("Subicura Crawl End")
 

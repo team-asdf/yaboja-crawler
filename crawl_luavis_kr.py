@@ -11,7 +11,7 @@ class Luavis:
     def __init__(self):
         self.file = open("./csv/luavis.csv", "w", encoding='utf-8', newline='')
         self.write = csv.writer(self.file)
-        self.write.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
+        self.write.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt", "priority"])
         self.main_url = "https://b.luavis.kr"
         json_file = open("keywords.json", encoding="utf-8")
         self.keyword_dict = json.load(json_file)
@@ -34,7 +34,7 @@ class Luavis:
             content_list = list(temp_soup.find_all("p"))
             content = ""
             for each in content_list[3:]:
-                content += each.get_text()
+                content += each.get_text().lstrip().rstrip().replace("\n", " ")
             url = self.main_url + sub_url
             cnt = 0
             source = "Luavis' Dev Story"
@@ -56,8 +56,9 @@ class Luavis:
                         image = self.main_url + self.parse_url(str(each))
                     break
             print(image)
+            priority = 0
             createdAt = self.parse_date(str(temp_soup.find("p", {"class": "post-meta"})))
-            self.write.writerow([title, content[:200], url, cnt, source, keyword, image, createdAt])
+            self.write.writerow([title, content[:199] + "...", url, cnt, source, keyword, image, createdAt, priority])
         self.file.close()
 
     def extract_keyword(self, text):

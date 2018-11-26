@@ -11,7 +11,7 @@ class Mingrammer:
     def __init__(self):
         self.file = open("./csv/mingrammer.csv", "w", encoding='utf-8', newline='')
         self.write = csv.writer(self.file)
-        self.write.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt"])
+        self.write.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt", "priority"])
         self.main_url = "https://mingrammer.com"
         json_file = open("keywords.json", encoding="utf-8")
         self.keyword_dict = json.load(json_file)
@@ -33,10 +33,10 @@ class Mingrammer:
             for url in url_lst:
                 temp_req = requests.get(url)
                 temp_soup = BeautifulSoup(temp_req.text, 'html.parser')
-                title = str(temp_soup.find('h1').text).rstrip()
+                title = str(temp_soup.find('h1').text).lstrip().rstrip()
                 content = ""
                 for each in temp_soup.find_all('p'):
-                    content += each.get_text()
+                    content += each.text.lstrip().rstrip().replace("\n", " ")
 
                 cnt = 0
                 source = "mingrammer"
@@ -59,9 +59,10 @@ class Mingrammer:
                             image = self.main_url + image.split("src=\"")[1].split("\"/>")[0]
                         else:
                             image = image.split("src=\"")[1].split("\"/>")[0]
-                print(image)
+
+                priority = 0
                 createdAt = self.parse_date(str(temp_soup.find("h2", {"class": "headline"}).text).split()[:3])
-                self.write.writerow([title, content[:200], url, cnt, source, keyword, image, createdAt])
+                self.write.writerow([title, content[:199] + "...", url, cnt, source, keyword, image, createdAt, priority])
         self.file.close()
 
     def extract_keyword(self, text):
