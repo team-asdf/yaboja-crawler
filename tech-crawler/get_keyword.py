@@ -82,5 +82,54 @@ def getKeywordsForMulti(title, content, source, korean=True):
     return list(set(L))
 
 
+def getKeywords(title, content, source, korean=True):
+    ret_list = []
+    except_hangul = re.compile('[^ ㄱ-ㅣ가-힣]+')
+
+    if korean:
+        word_of_content = except_hangul.findall(content)
+    else:
+        summary_text = englishSummary(content)
+        word_of_content = except_hangul.findall(summary_text)
+    
+    word_of_title = except_hangul.findall(title)
+    
+    words = []
+
+    for t in word_of_title:
+        if t.isalpha() and t != source:
+            if 3 <= len(t) <= 16:
+                words.append(t)
+
+    for t in word_of_content:
+        if len(words) > 20:
+            break
+        if t.isalpha() and t != source:
+            if 3 <= len(t) <= 16:
+                words.append(t)
+
+    words = list(set(words))
+    print(len(words))
+    print(words)
+
+    for word in words:
+        if word.isalpha():
+            res = requests.get("https://github.com/topics/" + word)
+            topic_source = res.text
+            topic_soup = BeautifulSoup(topic_source, 'lxml')
+
+            related = topic_soup.find_all("div", {"class": "col-md-4 mt-6 mt-md-0"})
+            for r in related:
+                topic = r.find_all("a", {"class": "topic-tag"})
+                for t in topic:
+                    for key in data.keys():
+                        if t.text.strip() in data[key]:
+                            ret_list.append(t.text.strip())
+                            ret_list.append(key)
+
+    print(list(set(ret_list)))
+    return list(set(ret_list))
+
+
 if __name__ == "__main__":
     pass
