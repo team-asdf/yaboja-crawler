@@ -41,7 +41,7 @@ def feed_parsing(file):
                 _keyword = ""
             created_at = time.strftime("%Y-%m-%d", d['entries'][i].get("published_parsed", time.gmtime())).split("T")[0]
             
-            file.writerow([title, content, link, 0, source, _keyword, "NULL", created_at, 0])
+            file.writerow([title, content[:200] + "...", link, 0, source, _keyword, "NULL", created_at, 0])
 
 
 def main():

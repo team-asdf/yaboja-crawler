@@ -100,7 +100,7 @@ def getData(file, link):
     else:
         _keyword = ""
 
-    file.writerow([title, content, link, 0, source, _keyword, "NULL", created_at, 0])
+    file.writerow([title, content[:200] + "...", link, 0, source, _keyword, "NULL", created_at, 0])
 
 
 def main():
