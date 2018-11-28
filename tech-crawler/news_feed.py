@@ -34,14 +34,20 @@ def feed_parsing(file):
             content = clean_html(d['entries'][i]['description']).replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
             link = d['entries'][i]['link']
             source = general_url.search(d['entries'][i]['link']).group().split('.')[1]
-            keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source, False)
+            # keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source, False)
+            keyword_list = getKeywords(title.lower(), content.lower(), source, False)
             if keyword_list:
                 _keyword = ",".join(keyword_list)
             else:
                 _keyword = ""
             created_at = time.strftime("%Y-%m-%d", d['entries'][i].get("published_parsed", time.gmtime())).split("T")[0]
             
-            file.writerow([title, content[:200] + "...", link, 0, source, _keyword, "NULL", created_at, 0])
+            file.writerow([title, content[:200] + "...", link, 0, source, _keyword, "", created_at, 0])
+
+            updater = open(os.path.dirname(os.path.realpath(__file__)) + "/data/update.csv", "a", encoding='utf-8', newline='')
+            update_writer = csv.writer(updater)
+            update_writer.writerow([title, content[:200] + "...", link, 0, source, _keyword, "", created_at, 0])
+            updater.close()
 
 
 def main():

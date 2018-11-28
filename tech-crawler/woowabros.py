@@ -46,19 +46,34 @@ def getData(file, link):
     content = ""
     section_content = content_soup.find_all("div", {"class": "post-content"})
     for s in section_content:
+
+        image = ""
+        img = s.find("img")
+        if img is not None:
+            if "gravatar" not in img['src']:
+                if img['src'].startswith("/"):
+                    image = "http://woowabros.github.io" + img['src']
+        print(image)
+
         contents = s.find_all("p")
         for c in contents:
             content += c.text
     content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
     source = "woowabros"
 
-    keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source)
+    # keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source)
+    keyword_list = getKeywords(title.lower(), content.lower(), source)
     if keyword_list:
         _keyword = ",".join(keyword_list)
     else:
         _keyword = ""
 
-    file.writerow([title, content[:200] + "...", link, 0, source, _keyword, "NULL", created_at, 0])
+    file.writerow([title, content[:200] + "...", link, 0, source, _keyword, image, created_at, 0])
+
+    updater = open(os.path.dirname(os.path.realpath(__file__)) + "/data/update.csv", "a", encoding='utf-8', newline='')
+    update_writer = csv.writer(updater)
+    update_writer.writerow([title, content[:200] + "...", link, 0, source, _keyword, image, created_at, 0])
+    updater.close()
 
 
 def main():
@@ -70,7 +85,10 @@ def main():
     file = open(os.path.dirname(os.path.realpath(__file__)) + "/data/woowabros.csv", "a", encoding='utf-8', newline='')
     writefile = csv.writer(file)
     for i in range(len(link_list)):
-        getData(writefile, link_list[i])
+        try:
+            getData(writefile, link_list[i])
+        except:
+            print("skip")
     file.close()
 
     print(time.time() - start)

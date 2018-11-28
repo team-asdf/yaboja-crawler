@@ -18,8 +18,6 @@ with open(os.path.dirname(os.path.realpath(__file__)) + "/keywords.json", 'r') a
 
 def englishSummary(content):
     _summaries = summarizer.summarize(content)
-    _keywords = keywords.keywords(content, words=5, split=True)
-
     return _summaries
 
 
@@ -71,14 +69,14 @@ def getKeywordsForMulti(title, content, source, korean=True):
                 words.append(t)
 
     words = list(set(words))
-    print(len(words))
-    print(words)
+    print("체크할 단어 개수:", len(words))
 
     pool = Pool(processes=8)
     pool.map(getKeywordsForProcess, words)
     pool.close()
 
-    print(list(set(L)))
+    print("최종 목록:", list(set(L)))
+    print()
     return list(set(L))
 
 
@@ -109,8 +107,7 @@ def getKeywords(title, content, source, korean=True):
                 words.append(t)
 
     words = list(set(words))
-    print(len(words))
-    print(words)
+    print("체크할 단어 개수:", len(words))
 
     for word in words:
         if word.isalpha():
@@ -127,7 +124,8 @@ def getKeywords(title, content, source, korean=True):
                             ret_list.append(t.text.strip())
                             ret_list.append(key)
 
-    print(list(set(ret_list)))
+    print("최종 목록:", list(set(ret_list)))
+    print()
     return list(set(ret_list))
 
 

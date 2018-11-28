@@ -73,13 +73,19 @@ def getData(file, link):
     content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
     source = "dropbox"
 
-    keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source)
+    # keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source, False)
+    keyword_list = getKeywords(title.lower(), content.lower(), source, False)
     if keyword_list:
         _keyword = ",".join(keyword_list)
     else:
         _keyword = ""    
 
-    file.writerow([title, content[:200] + "...", link, 0, source, _keyword, "NULL", created_at, 0])
+    file.writerow([title, content[:200] + "...", link, 0, source, _keyword, "", created_at, 0])
+
+    updater = open(os.path.dirname(os.path.realpath(__file__)) + "/data/update.csv", "a", encoding='utf-8', newline='')
+    update_writer = csv.writer(updater)
+    update_writer.writerow([title, content[:200] + "...", link, 0, source, _keyword, "", created_at, 0])
+    updater.close()
 
 
 def main():
@@ -91,7 +97,10 @@ def main():
     file = open(os.path.dirname(os.path.realpath(__file__)) + "/data/dropbox.csv", "a", encoding='utf-8', newline='')
     writefile = csv.writer(file)
     for i in range(len(link_list)):
-        getData(writefile, link_list[i])
+        try:
+            getData(writefile, link_list[i])
+        except:
+            print("skip")
     file.close()
 
     print(time.time() - start)
