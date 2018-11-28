@@ -32,7 +32,8 @@ class Subicura:
 
         for target in information:
             sub_url = self.parse_url(str(target))
-            title = self.parse_title(str(target))
+            title = self.parse_title(str(target)).lstrip().rstrip()\
+                .replace("\n", " ").replace("\"", "").replace("\'", "")
             req = requests.get(main_url + sub_url)
             soup = BeautifulSoup(req.text, 'html.parser')
             date = soup.find("time")
@@ -42,10 +43,11 @@ class Subicura:
 
             f = io.open("text.txt", mode="w", encoding="utf-8")
             for each in content_list:
-                text += each.get_text().lstrip().rstrip().replace("\n", " ")
+                text += each.get_text().lstrip().rstrip().replace("\n", " ")\
+                    .lstrip().rstrip().replace("\n", " ").replace("\"", "").replace("\'", "")
                 f.writelines(each.get_text().rstrip())
             f.close()
-            text = re.sub('[^가-힣0-9a-zA-Z|.|!|?\\s]', "", text)
+            # text = re.sub('[^가-힣0-9a-zA-Z|.|!|?\\s]', "", text)
 
             keyword_list = sorted(list(set(self.extract_keyword())))
             keyword = ""

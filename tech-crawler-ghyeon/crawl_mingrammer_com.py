@@ -40,10 +40,10 @@ class Mingrammer:
             for url in url_lst:
                 temp_req = requests.get(url)
                 temp_soup = BeautifulSoup(temp_req.text, 'html.parser')
-                title = str(temp_soup.find('h1').text).lstrip().rstrip()
+                title = str(temp_soup.find('h1').text).lstrip().rstrip().replace("\n", " ").replace("\"", "").replace("\'", "")
                 content = ""
                 for each in temp_soup.find_all('p'):
-                    content += each.text.lstrip().rstrip().replace("\n", " ")
+                    content += each.text.lstrip().rstrip().replace("\n", " ").replace("\"", "").replace("\'", "")
 
                 cnt = 0
                 source = "mingrammer"

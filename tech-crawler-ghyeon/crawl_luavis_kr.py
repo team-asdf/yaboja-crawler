@@ -38,11 +38,12 @@ class Luavis:
             temp_req = requests.get(self.main_url + sub_url)
             temp_html = temp_req.text
             temp_soup = BeautifulSoup(temp_html, 'html.parser')
-            title = self.parse_title(str(temp_soup.find("h1", {"class": "post-title"})))
+            title = self.parse_title(str(temp_soup.find("h1", {"class": "post-title"}))).lstrip().rstrip()\
+                .replace("\n", " ").replace("\"", "").replace("\'", "")
             content_list = list(temp_soup.find_all("p"))
             content = ""
             for each in content_list[3:]:
-                content += each.get_text().lstrip().rstrip().replace("\n", " ")
+                content += each.get_text().lstrip().rstrip().replace("\n", " ").replace("\"", "").replace("\'", "")
             url = self.main_url + sub_url
             cnt = 0
             source = "Luavis' Dev Story"
