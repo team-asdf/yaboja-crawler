@@ -35,9 +35,9 @@
   "ar vr" : ["증강현실", "가상현실", "vr", "ar", "oculus", "오큘러스", "daydream", "데이드림", "tango", "탱고", "holographic"],
   "frontend": ["웹", "web", "프론트", "프론트엔드", "frontend", "html", "css", "scss", "sass", "stylesheet",
                "스타일시트", "bootstrap", "부트스트랩", "material", "ui", "ux","npm", "webpack", "ajax", "애니메이션",
-               "animation", "react", "브라우저", "IE6", "yarn", "stylus", "webpack", "design"
+               "animation", "react", "브라우저", "IE6", "yarn", "stylus", "webpack", "design",
                "리액트", "vue", "angular", "앵귤러", "렌더링", "javascript", "자바스크립트", "typescript", "타입스크립트"],
   "backend" : ["백엔드", "backend", "IO", "멀티쓰레드", "멀티스레드", "api", "tcp", "ip", "aws", "db", "서버", "DBMS",
            "데이터베이스", "mysql", "쿼리", "query", "rdb", "관계형데이터베이스", "sql", "보안", "serverless", "json", "xml",
-           "cloud", "클라우드", "트랜잭션", "router", "auth"],
+           "cloud", "클라우드", "트랜잭션", "router", "auth"]
 }
