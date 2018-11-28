@@ -11,24 +11,28 @@ import openai
 import alistapart
 import lezhin
 
-import os, csv
+import os, csv, sys
 
 if __name__ == "__main__":
+    multi = False
+    if len(sys.argv) == 2 and sys.argv[1] == "--multi":
+        multi = True
+
     updater = open(os.path.dirname(os.path.realpath(__file__)) + "/data/update.csv", "w", encoding='utf-8', newline='')
     updater.close()
 
-    woowabros.main()
-    vingle.main()
-    kakao.main()
-    netflix.main()
-    dropbox.main()
-    line.main()
-    paypal.main()
-    slack.main()
-    openai.main()
-    alistapart.main()
-    lezhin.main()
-    news_feed.main()
+    woowabros.main(multi)
+    vingle.main(multi)
+    kakao.main(multi)
+    netflix.main(multi)
+    dropbox.main(multi)
+    line.main(multi)
+    paypal.main(multi)
+    slack.main(multi)
+    openai.main(multi)
+    alistapart.main(multi)
+    lezhin.main(multi)
+    news_feed.main(multi)
 
     files = ["woowabros", "vingle", "kakao", "netflix", "dropbox", "line", "paypal", "slack", "openai", "alistapart", "lezhin", "news_feed"]
     merge = open(os.path.dirname(os.path.realpath(__file__)) + "/data/merged.csv", "w", encoding='utf-8', newline='')
