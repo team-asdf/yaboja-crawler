@@ -3,3 +3,6 @@ __pycache__
 venv
 text.txt
 *.csv
+*.pyc
+.vscode/
+.DS_Store
