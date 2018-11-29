@@ -1,7 +1,7 @@
 import requests
 import csv
 from bs4 import BeautifulSoup
-from get_keyword import getKeywordsForMulti
+from get_keyword import getKeywordsForMulti, getKeywords
 import time
 import os
 from selenium import webdriver
@@ -64,12 +64,12 @@ def getLinks():
     return link_list
 
 
-def getData(file, link):
+def getData(file, link, multi):
     r = requests.get(link)
     content_source = r.text
     content_soup = BeautifulSoup(content_source, "lxml")
     try:
-        title = content_soup.find('h1', {"class": "PostHeader-title"}).text.replace(u'\xa0',' ').replace('\t',' ').replace('\n', ' ')
+        title = content_soup.find('h1', {"class": "PostHeader-title"}).text.replace(u'\xa0',' ').replace('\t',' ').replace('\n', ' ').lstrip().rstrip().replace("\"", "").replace("\'", "")
     except:
         print("pass")
         return
@@ -92,11 +92,14 @@ def getData(file, link):
         contents = s.find_all("p")
         for c in contents:
             content += c.text
-    content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
+    content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ').lstrip().rstrip().replace("\"", "").replace("\'", "")
     source = "openai"
 
-    # keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source, False)
-    keyword_list = getKeywords(title.lower(), content.lower(), source, False)
+    if multi:
+        keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source, False)
+    else:
+        keyword_list = getKeywords(title.lower(), content.lower(), source, False)
+
     if keyword_list:
         _keyword = ",".join(keyword_list)
     else:
@@ -110,7 +113,7 @@ def getData(file, link):
     updater.close()
 
 
-def main():
+def main(multi):
     print("openai")
     start = time.time()
 
@@ -119,10 +122,7 @@ def main():
     file = open(os.path.dirname(os.path.realpath(__file__)) + "/data/openai.csv", "a", encoding='utf-8', newline='')
     writefile = csv.writer(file)
     for i in range(len(link_list)):
-        try:
-            getData(writefile, link_list[i])
-        except:
-            print("skip")
+        getData(writefile, link_list[i], multi)
     file.close()
 
     print(time.time() - start)

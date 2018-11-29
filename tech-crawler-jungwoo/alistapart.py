@@ -1,7 +1,7 @@
 import requests
 import csv
 from bs4 import BeautifulSoup
-from get_keyword import getKeywordsForMulti
+from get_keyword import getKeywordsForMulti, getKeywords
 import time
 from datetime import datetime
 import os
@@ -48,12 +48,12 @@ def getLinks():
     return link_list
 
 
-def getData(file, link):
+def getData(file, link, multi):
     r = requests.get(link)
     content_source = r.text
     content_soup = BeautifulSoup(content_source, "lxml")
 
-    title = content_soup.select_one('h1.entry-title').text.replace(u'\xa0',' ').replace('\t',' ')    
+    title = content_soup.select_one('h1.entry-title').text.replace(u'\xa0',' ').replace('\t',' ').lstrip().rstrip().replace("\"", "").replace("\'", "")
     created_at = content_soup.find("time")['datetime'].split("T")[0]
     print(created_at)
     if int(created_at.split('-')[0]) < 2013:
@@ -76,11 +76,14 @@ def getData(file, link):
         contents = s.find_all("p")
         for c in contents:
             content += c.text
-    content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
+    content = content.replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ').lstrip().rstrip().replace("\"", "").replace("\'", "")
     source = "alistapart"
 
-    # keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source, False)
-    keyword_list = getKeywords(title.lower(), content.lower(), source, False)
+    if multi:
+        keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source, False)
+    else:
+        keyword_list = getKeywords(title.lower(), content.lower(), source, False)
+
     if keyword_list:
         _keyword = ",".join(keyword_list)
     else:
@@ -93,8 +96,10 @@ def getData(file, link):
     update_writer.writerow([title, content[:200] + "...", link, 0, source, _keyword, image, created_at, 0])
     updater.close()
 
+    return True
 
-def main():
+
+def main(multi):
     print("alistapart")
     start = time.time()
 
@@ -103,11 +108,8 @@ def main():
     file = open(os.path.dirname(os.path.realpath(__file__)) + "/data/alistapart.csv", "a", encoding='utf-8', newline='')
     writefile = csv.writer(file)
     for i in range(len(link_list)):
-        try:
-            if not getData(writefile, link_list[i]):
-                break
-        except:
-            print("skip")
+        if not getData(writefile, link_list[i], multi):
+            break
     file.close()
 
     print(time.time() - start)

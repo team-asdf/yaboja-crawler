@@ -1,7 +1,7 @@
 import feedparser
 import re
 import csv
-from get_keyword import getKeywordsForMulti
+from get_keyword import getKeywordsForMulti, getKeywords
 import time
 import os
 import ssl
@@ -18,7 +18,7 @@ def clean_html(raw_html):
     return clean_text
 
 
-def feed_parsing(file):
+def feed_parsing(file, multi):
     if hasattr(ssl, '_create_unverified_context'):
         ssl._create_default_https_context = ssl._create_unverified_context  # to solve SSLCertVerificationError problem
 
@@ -34,8 +34,12 @@ def feed_parsing(file):
             content = clean_html(d['entries'][i]['description']).replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
             link = d['entries'][i]['link']
             source = general_url.search(d['entries'][i]['link']).group().split('.')[1]
-            # keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source, False)
-            keyword_list = getKeywords(title.lower(), content.lower(), source, False)
+            
+            if multi:
+                keyword_list = getKeywordsForMulti(title.lower(), content.lower(), source, False)
+            else:
+                keyword_list = getKeywords(title.lower(), content.lower(), source, False)
+
             if keyword_list:
                 _keyword = ",".join(keyword_list)
             else:
@@ -50,12 +54,12 @@ def feed_parsing(file):
             updater.close()
 
 
-def main():
+def main(multi):
     print("news_feed")
     file = open(os.path.dirname(os.path.realpath(__file__)) + "/data/news_feed.csv", "w", encoding='utf-8', newline='')
     writefile = csv.writer(file)
     writefile.writerow(["title", "content", "url", "cnt", "source", "keyword", "image", "createdAt", "priority"])
-    feed_parsing(writefile)
+    feed_parsing(writefile, multi)
     file.close()
 
 
