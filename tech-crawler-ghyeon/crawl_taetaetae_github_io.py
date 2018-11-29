@@ -16,7 +16,9 @@ class Tae:
         json_file.close()
 
     def main(self):
+        print("taetaetae crawl start")
         self.crawl()
+        print("taetaetae crawl end")
 
     def crawl(self):
         page_idx = 1
