@@ -7,7 +7,7 @@ import sys
 from crawl_luavis_kr import Luavis
 from crawl_subicura_com import Subicura
 from crawl_mingrammer_com import Mingrammer
-
+from crawl_taetaetae_github_io import Tae
 
 def main():
     start = time.time()
@@ -26,7 +26,7 @@ def main():
         print("Update ", end="")
         merge_update()
     print("Operation Start")
-    crawl_list = [Luavis(), Subicura(), Mingrammer()]
+    crawl_list = [Luavis(), Subicura(), Mingrammer(), Tae()]
     for each in crawl_list:
         each.main()
     if len(sys.argv) == 2 and sys.argv[1] == "--full":

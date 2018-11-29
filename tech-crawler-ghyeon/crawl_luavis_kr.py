@@ -25,7 +25,7 @@ class Luavis:
         else:
             main_list = list(csv.reader(main_file))
             main_file.close()
-        print(main_list)
+        # print(main_list)
         req = requests.get("https://b.luavis.kr/")
         html = req.text
         soup = BeautifulSoup(html, 'html.parser')
