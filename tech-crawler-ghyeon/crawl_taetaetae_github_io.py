@@ -46,7 +46,7 @@ class Tae:
                 for content_idx in range(1, len(content_tag_list)):
                     content += content_tag_list[content_idx].text.lstrip().rstrip().replace("\n", " ").replace("\"", "").replace("\'", "")
                 # print(content)
-                keyword_list = self.extract_keyword(content)
+                keyword_list = sorted(list(set(self.extract_keyword(content))))
                 keyword = ""
                 for idx in range(len(keyword_list)):
                     keyword += keyword_list[idx]
