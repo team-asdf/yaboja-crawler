@@ -8,11 +8,23 @@
 
 ## Install
 
-> writing...
+> ```shell
+> pip3 install -r requirements.txt
+> ```
 
 ## Example
 
-> writing...
+> ##### DB Initialization
+>
+> ```shell
+> bash db_initialize.sh
+> ```
+>
+> ##### DB Update
+>
+> ```bash
+> bash db_update.sh
+> ```
 
 ## License
 
