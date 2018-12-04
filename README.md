@@ -37,6 +37,8 @@
 > bash db_update.sh
 > ```
 
+#### You need to install Java to use keyword extraction.
+
 ## License
 
 <img align="right" src="http://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png">
