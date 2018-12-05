@@ -18,6 +18,7 @@ class Luavis:
         json_file.close()
 
     def crawl(self):
+        pattern = re.compile('[a-zA-Z]+')
         try:
             main_file = open("./csv/main.csv", 'r', encoding="utf-8")
         except FileNotFoundError:
@@ -44,10 +45,21 @@ class Luavis:
             content = ""
             for each in content_list[3:]:
                 content += each.get_text().lstrip().rstrip().replace("\n", " ").replace("\"", "").replace("\'", "")
+            eng_content = pattern.findall(content)
+            eng_content += pattern.findall(title)
             url = self.main_url + sub_url
             cnt = 0
             source = "Luavis' Dev Story"
             keyword_list = sorted(list(set(self.extract_keyword(content))))
+            for each in eng_content:
+                temp_word = each.lower()
+                for key in self.keyword_dict:
+                    if temp_word in self.keyword_dict[key]:
+                        if key not in keyword_list:
+                            keyword_list.append(key)
+            keyword_list.sort()
+            if 'c' in keyword_list:
+                keyword_list.remove('c')
             keyword = ""
             for idx in range(len(keyword_list)):
                 keyword += keyword_list[idx]

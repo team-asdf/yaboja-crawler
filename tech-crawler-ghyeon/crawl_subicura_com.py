@@ -19,6 +19,7 @@ class Subicura:
         self.keyword_dict = json.load(json_file)
 
     def main(self):
+        pattern = re.compile('[a-zA-Z]+')
         try:
             main_file = open("./csv/main.csv", 'r', encoding="utf-8")
         except FileNotFoundError:
@@ -48,8 +49,18 @@ class Subicura:
                 f.writelines(each.get_text().rstrip())
             f.close()
             # text = re.sub('[^가-힣0-9a-zA-Z|.|!|?\\s]', "", text)
-
+            eng_content = pattern.findall(text)
+            eng_content += pattern.findall(title)
             keyword_list = sorted(list(set(self.extract_keyword())))
+            for each in eng_content:
+                temp_word = each.lower()
+                for key in self.keyword_dict:
+                    if temp_word in self.keyword_dict[key]:
+                        if key not in keyword_list:
+                            keyword_list.append(key)
+            keyword_list.sort()
+            if 'c' in keyword_list:
+                keyword_list.remove('c')
             keyword = ""
             for idx in range(len(keyword_list)):
                 keyword += keyword_list[idx]

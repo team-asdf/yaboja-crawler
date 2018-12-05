@@ -9,6 +9,7 @@ from crawl_subicura_com import Subicura
 from crawl_mingrammer_com import Mingrammer
 from crawl_taetaetae_github_io import Tae
 
+
 def main():
     start = time.time()
     if len(sys.argv) == 2 and sys.argv[1] == "--full":

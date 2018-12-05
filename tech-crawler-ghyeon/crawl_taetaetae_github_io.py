@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import csv
 from text_rank import *
+import re
 import json
 
 
@@ -21,13 +22,13 @@ class Tae:
         print("taetaetae crawl end")
 
     def crawl(self):
+        pattern = re.compile('[a-zA-Z]+')
         page_idx = 1
         while 1:
             if page_idx == 1:
                 url = self.main_url
             else:
                 url = self.main_url + "/page/" + str(page_idx)
-
             req = requests.get(url)
             soup = BeautifulSoup(req.text, 'html.parser')
             sub_url_tag_list = soup.find_all("a", {"class": "link-unstyled"})
@@ -46,7 +47,18 @@ class Tae:
                 for content_idx in range(1, len(content_tag_list)):
                     content += content_tag_list[content_idx].text.lstrip().rstrip().replace("\n", " ").replace("\"", "").replace("\'", "")
                 # print(content)
+                eng_content = pattern.findall(content)
+                eng_content += pattern.findall(title)
                 keyword_list = sorted(list(set(self.extract_keyword(content))))
+                for each in eng_content:
+                    temp_word = each.lower()
+                    for key in self.keyword_dict:
+                        if temp_word in self.keyword_dict[key]:
+                            if key not in keyword_list:
+                                keyword_list.append(key)
+                keyword_list.sort()
+                if 'c' in keyword_list:
+                    keyword_list.remove('c')
                 keyword = ""
                 for idx in range(len(keyword_list)):
                     keyword += keyword_list[idx]
