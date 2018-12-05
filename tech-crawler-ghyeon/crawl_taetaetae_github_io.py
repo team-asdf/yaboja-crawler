@@ -59,6 +59,8 @@ class Tae:
                 keyword_list.sort()
                 if 'c' in keyword_list:
                     keyword_list.remove('c')
+                if 'r' in keyword_list:
+                    keyword_list.remove('r')
                 keyword = ""
                 for idx in range(len(keyword_list)):
                     keyword += keyword_list[idx]
