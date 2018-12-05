@@ -31,7 +31,7 @@ def feed_parsing(file, multi):
         # print(source)
         for i in range(len(d.entries)):
             title = d['entries'][i]['title']
-            content = clean_html(d['entries'][i]['description']).replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ')
+            content = clean_html(d['entries'][i]['description']).replace(u'\xa0',' ').replace('\t',' ').replace('<br>', ' ').replace("\n", ' ').lstrip().rstrip().replace("\"", "").replace("\'", "")
             link = d['entries'][i]['link']
             source = general_url.search(d['entries'][i]['link']).group().split('.')[1]
             
