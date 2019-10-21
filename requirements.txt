@@ -3,7 +3,7 @@ bs4==0.0.1
 konlpy==0.5.1
 networkx==2.2
 requests==2.20.1
-urllib3==1.24.1
+urllib3==1.24.2
 feedparser==5.2.1
 lxml==4.2.5
 selenium==3.141.0
